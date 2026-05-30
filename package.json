@@ -1,0 +1,17 @@
+{
+  "name": "padaria-precificador",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.0.12",
+    "eslint": "^10.4.0",
+    "json-server": "^0.17.4",
+    "prettier": "3.8.3"
+  }
+}
