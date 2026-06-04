@@ -1,5 +1,5 @@
 import "../src/style.css";
-import { criarProduto } from "../src/api";
+import { listarProdutos, criarProduto, excluirProduto } from "../src/api.js";
 
 const addButton = document.querySelector("#add_button");
 const formularioAdicionarInsumo = document.querySelector(
@@ -7,22 +7,35 @@ const formularioAdicionarInsumo = document.querySelector(
 );
 const inputNome = document.querySelector("#nome");
 const inputUnidade = document.querySelector("#unidade");
-const valorTotal = document.querySelector("#valorTotal");
-const quantidadePorEmbalagem = document.querySelector("#quantidade");
+const inputValorTotal = document.querySelector("#valorTotal");
+const inputQuantidadePorEmbalagem = document.querySelector("#quantidade");
 const botaoCancelar = document.querySelector("#botaoCancelar");
 
-addButton.addEventListener("click", () => {
+function fecharOuAbrirFormulário() {
+  inputNome.value = "";
+  inputUnidade.value = "UN";
+  inputValorTotal.value = "";
+  inputQuantidadePorEmbalagem.value = "";
   formularioAdicionarInsumo.classList.toggle("hidden");
+}
+
+addButton.addEventListener("click", () => {
+  fecharOuAbrirFormulário();
 });
 
 botaoCancelar.addEventListener("click", (e) => {
   e.preventDefault();
-  inputNome.value = "";
-  inputNome.value = "";
-  inputNome.value = "";
-  formularioAdicionarInsumo.classList.toggle("hidden");
+  fecharOuAbrirFormulário();
 });
 
-formularioAdicionarInsumo.addEventListener("submit", () => {
-  ("formulario enviado");
+formularioAdicionarInsumo.addEventListener("submit", (e) => {
+  e.preventDefault();
+  console.log("formulario enviado");
+  criarProduto({
+    nome: inputNome.value,
+    unidade: inputUnidade.value,
+    valorTotal: inputValorTotal.value,
+    quantidadePorEmbalagem: inputQuantidadePorEmbalagem.value,
+  });
+  fecharOuAbrirFormulário();
 });

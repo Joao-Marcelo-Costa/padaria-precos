@@ -24,6 +24,13 @@
     </div>
     <form id="formularioAdicionarInsumo" action="" class="hidden">
       <input type="text" id="nome" placeholder="Nome do insumo" required />
+      <input type="text" id="valorTotal" placeholder="R$0,00" required />
+      <input
+        type="number"
+        id="quantidade"
+        placeholder="quantidade por embalagem"
+        required
+      />
       <select id="unidade" required>
         <option>UN</option>
         <option>Kg</option>
@@ -32,15 +39,8 @@
         <option>L</option>
         <option>mL</option>
       </select>
-      <input type="text" id="valorTotal" placeholder="R$0,00" required />
-      <input
-        type="number"
-        id="quantidade"
-        placeholder="quantidade por embalagem"
-        required
-      />
-      <button id="botaoCancelar" type="button">cancelar</button>
-      <button id="botaoSalvar" type="submit">cancelar</button>
+      <button id="botaoCancelar" type="button">Cancelar</button>
+      <button id="botaoSalvar" type="submit">Salvar</button>
     </form>
 
     <ul></ul>
