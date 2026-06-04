@@ -1,4 +1,6 @@
 import "../src/style.css";
+import { criarProduto } from "../src/api";
+
 const addButton = document.querySelector("#add_button");
 const formularioAdicionarInsumo = document.querySelector(
   "#formularioAdicionarInsumo",
