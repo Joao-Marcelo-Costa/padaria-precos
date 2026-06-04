@@ -21,7 +21,7 @@ body {
   margin: 20px 0 60px 0;
 }
 
-.propierties-main-text {
+.propierties-cabeçalho {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -29,7 +29,7 @@ body {
   align-items: center;
 }
 
-.propierties-main-text p {
+.propierties-cabeçalho p {
   font-family: "Oswald";
   font-optical-sizing: auto;
   font-weight: 700;
@@ -38,7 +38,7 @@ body {
   font-size: 40px;
 }
 
-.propierties-main-text button {
+.propierties-cabeçalho button {
   stroke: none;
   all: unset;
   width: 50px;
@@ -46,7 +46,7 @@ body {
   text-align: center;
 }
 
-.propierties-main-text button img {
+.propierties-cabeçalho button img {
   width: 50px;
   height: 50px;
 }
