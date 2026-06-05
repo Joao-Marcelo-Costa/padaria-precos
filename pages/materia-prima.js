@@ -50,8 +50,11 @@ formularioAdicionarInsumo.addEventListener("submit", (e) => {
   criarProduto({
     nome: inputNome.value,
     unidade: inputUnidade.value,
-    valorTotal: inputValorTotal.value,
-    quantidadePorEmbalagem: inputQuantidadePorEmbalagem.value,
+    valorTotal: inputValorTotal.value.replace(/[^0-9]/g, ""),
+    quantidadePorEmbalagem: inputQuantidadePorEmbalagem.value.replace(
+      /[^0-9]/g,
+      "",
+    ),
   });
   fecharOuAbrirFormulário();
 });
