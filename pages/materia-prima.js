@@ -10,6 +10,22 @@ const inputUnidade = document.querySelector("#unidade");
 const inputValorTotal = document.querySelector("#valorTotal");
 const inputQuantidadePorEmbalagem = document.querySelector("#quantidade");
 const botaoCancelar = document.querySelector("#botaoCancelar");
+const corpoDaTabela = document.querySelector(".table_body");
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const listaDeInsumos = await listarProdutos();
+  listaDeInsumos.forEach((e) => {
+    let linha = document.createElement("tr");
+    linha.innerHTML = `
+      <td>${e.nome}</td>
+      <td>${e.unidade}</td>
+      <td>R$${e.valorTotal},00</td>
+      <td>${e.quantidadePorEmbalagem}</td>
+      <td>${e.valorTotal / e.quantidadePorEmbalagem}R$/${e.unidade}</td>
+      <td></td>`;
+    corpoDaTabela.appendChild(linha);
+  });
+});
 
 function fecharOuAbrirFormulário() {
   inputNome.value = "";

@@ -26,13 +26,23 @@ table {
   table-layout: fixed;
 }
 
-table thead tr {
+table thead tr,
+table tbody tr {
   font-family: "Oswald";
   font-optical-sizing: auto;
-  font-weight: 700;
   font-style: normal;
   color: var(--cor_do_texto_fixo);
+  text-align: center;
+}
+
+table thead tr {
+  font-weight: 700;
   font-size: 40px;
+}
+
+table tbody tr {
+  font-weight: 300;
+  font-size: 30px;
 }
 
 table thead tr button {
