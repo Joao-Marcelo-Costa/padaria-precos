@@ -8,21 +8,36 @@
   </head>
   <body>
     <h1 class="insumos-main-title">Insumos</h1>
-
-    <div class="propierties-cabeçalho">
-      <p>Nome</p>
-      <p>Unidade</p>
-      <p>Valor Total</p>
-      <p>Quantidade</p>
-      <p>Valor Fracionado</p>
-      <button>
-        <img
-          src="/public/add_icon.png"
-          alt="imagem do simbolo de mais representando o botão de adicionar insumo"
-          id="add_button"
-        />
-      </button>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Unidade</th>
+          <th>Valor Total</th>
+          <th>Quantidade</th>
+          <th>Valor Fracionado</th>
+          <th class="button-file">
+            <button>
+              <img
+                src="/public/add_icon.png"
+                alt="imagem do simbolo de mais representando o botão de adicionar insumo"
+                id="add_button"
+              />
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
     <form id="formularioAdicionarInsumo" action="" class="hidden">
       <input type="text" id="nome" placeholder="Nome do insumo" required />
       <input type="text" id="valorTotal" placeholder="R$0,00" required />
