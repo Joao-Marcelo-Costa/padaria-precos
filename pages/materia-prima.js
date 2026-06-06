@@ -12,20 +12,28 @@ const inputQuantidadePorEmbalagem = document.querySelector("#quantidade");
 const botaoCancelar = document.querySelector("#botaoCancelar");
 const corpoDaTabela = document.querySelector(".table_body");
 
-document.addEventListener("DOMContentLoaded", async () => {
+function adicionarInsumoNaTela(objetoInsumo) {
+  const corpoDaTabela = document.querySelector(".table_body");
+  let linha = document.createElement("tr");
+  linha.innerHTML = `
+  <td>${objetoInsumo.nome}</td>
+  <td>${objetoInsumo.unidade}</td>
+  <td>R$${objetoInsumo.valorTotal},00</td>
+  <td>${objetoInsumo.quantidadePorEmbalagem}</td>
+  <td>${objetoInsumo.valorTotal / objetoInsumo.quantidadePorEmbalagem}R$/${objetoInsumo.unidade}</td>
+  <td></td>`;
+  corpoDaTabela.appendChild(linha);
+}
+
+async function carregarInsumos() {
+  corpoDaTabela.innerHTML = "";
   const listaDeInsumos = await listarProdutos();
   listaDeInsumos.forEach((e) => {
-    let linha = document.createElement("tr");
-    linha.innerHTML = `
-      <td>${e.nome}</td>
-      <td>${e.unidade}</td>
-      <td>R$${e.valorTotal},00</td>
-      <td>${e.quantidadePorEmbalagem}</td>
-      <td>${e.valorTotal / e.quantidadePorEmbalagem}R$/${e.unidade}</td>
-      <td></td>`;
-    corpoDaTabela.appendChild(linha);
+    adicionarInsumoNaTela(e);
   });
-});
+}
+
+document.addEventListener("DOMContentLoaded", carregarInsumos);
 
 function fecharOuAbrirFormulário() {
   inputNome.value = "";
@@ -47,14 +55,20 @@ botaoCancelar.addEventListener("click", (e) => {
 formularioAdicionarInsumo.addEventListener("submit", (e) => {
   e.preventDefault();
   console.log("formulario enviado");
-  criarProduto({
+  let produtoParaCriar = {
     nome: inputNome.value,
     unidade: inputUnidade.value,
-    valorTotal: inputValorTotal.value.replace(/[^0-9]/g, ""),
-    quantidadePorEmbalagem: inputQuantidadePorEmbalagem.value.replace(
-      /[^0-9]/g,
-      "",
+    valorTotal: parseFloat(
+      inputValorTotal.value.replace(",", ".").replace(/[^\d.]/g, ""),
     ),
-  });
+    quantidadePorEmbalagem: parseFloat(
+      inputQuantidadePorEmbalagem.value
+        .replace(",", ".")
+        .replace(/[^\d.]/g, ""),
+    ),
+  };
+  criarProduto(produtoParaCriar);
   fecharOuAbrirFormulário();
+  adicionarInsumoNaTela(produtoParaCriar);
+  corpoDaTabela.appendChild(linha);
 });
