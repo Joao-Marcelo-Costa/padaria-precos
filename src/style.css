@@ -22,7 +22,7 @@ body {
 }
 
 table {
-  width: 100%;
+  width: 95%;
   table-layout: fixed;
 }
 
@@ -45,18 +45,32 @@ table tbody tr {
   font-size: 30px;
 }
 
-table thead tr button {
+table thead tr button,
+table tbody tr td button {
   stroke: none;
   all: unset;
-  width: 50px;
-  height: 50px;
-  padding: 12px 0 8px 0;
 }
 
+table tbody tr td button,
 table thead tr button img {
   width: 50px;
   height: 50px;
+  padding: 12px 0 0px 0;
 }
+
+table tbody tr td button {
+  padding: 12px 8px 8px 0;
+}
+
+table tbody tr button,
+table tbody tr button img {
+  width: 50px;
+  height: 50px;
+}
+table tbody tr button {
+  padding: 12px 0 8px 0;
+}
+
 .button-file {
   width: 200px;
 }
