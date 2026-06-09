@@ -1,14 +1,11 @@
 import "../src/style.css";
 import { listarProdutos, criarProduto, excluirProduto } from "../src/api.js";
+import { query } from "firebase/firestore";
 
 const addButton = document.querySelector("#add_button");
 const formularioAdicionarInsumo = document.querySelector(
   "#formularioAdicionarInsumo",
 );
-const inputNome = document.querySelector("#nome");
-const inputUnidade = document.querySelector("#unidade");
-const inputValorTotal = document.querySelector("#valorTotal");
-const inputQuantidadePorEmbalagem = document.querySelector("#quantidade");
 const botaoCancelar = document.querySelector("#botaoCancelar");
 const corpoDaTabela = document.querySelector(".table_body");
 
@@ -20,7 +17,7 @@ function adicionarInsumoNaTela(objetoInsumo) {
   <td>${objetoInsumo.unidade}</td>
   <td>R$${objetoInsumo.valorTotal},00</td>
   <td>${objetoInsumo.quantidadePorEmbalagem}</td>
-  <td>${objetoInsumo.valorTotal / objetoInsumo.quantidadePorEmbalagem}R$/${objetoInsumo.unidade}</td>`;
+  <td>${objetoInsumo.valorFracionado}R$/${objetoInsumo.unidade}</td>`;
 
   const tdButtons = document.createElement("td");
 
@@ -57,44 +54,123 @@ async function carregarInsumos() {
 
 document.addEventListener("DOMContentLoaded", carregarInsumos);
 
-function fecharOuAbrirFormulário() {
-  inputNome.value = "";
-  inputUnidade.value = "UN";
-  inputValorTotal.value = "";
-  inputQuantidadePorEmbalagem.value = "";
-  formularioAdicionarInsumo.classList.toggle("hidden");
+function abrirFormulário() {
+  const tbody = document.querySelector("tbody");
+  if (tbody.querySelector(".formularioTr")) {
+    tbody.querySelector(".formularioTr").remove();
+    return;
+  }
+  const formularioTr = document.createElement("tr");
+  formularioTr.classList.add("formularioTr");
+
+  formularioTr.innerHTML = `
+  <td>
+    <input type="text" id="nome" placeholder="Nome do insumo" required />
+  </td>
+  <td>
+      <select id="unidade" required>
+        <option>UN</option>
+        <option>Kg</option>
+        <option>g</option>
+        <option>100g</option>
+        <option>L</option>
+        <option>mL</option>
+    </select>
+  </td>
+  <td>
+    <input type="number"id="valorTotal" placeholder="EX: R$0,00" required/>
+  </td>
+  <td>
+    <input type="number" id="quantidade" placeholder="Qnt/Emb " required/>
+  </td>
+  <td>
+    <button id="botaoCancelar" type="button">Cancelar</button>
+  </td>
+  <td>
+    <button id="botaoSalvar" type="submit">Salvar</button>
+  </td>`;
+
+  const inputNome = formularioTr.querySelector("#nome");
+  const inputUnidade = formularioTr.querySelector("#unidade");
+  const inputValorTotal = formularioTr.querySelector("#valorTotal");
+  const inputQuantidadePorEmbalagem = formularioTr.querySelector("#quantidade");
+
+  const campos = [
+    inputNome,
+    inputUnidade,
+    inputValorTotal,
+    inputQuantidadePorEmbalagem,
+  ];
+  campos.forEach((campo, indice) => {
+    campo.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+
+      e.preventDefault();
+
+      const proximoCampo = campos[indice + 1];
+
+      if (proximoCampo) {
+        proximoCampo.focus();
+      } else {
+        document.getElementById("botaoSalvar").click();
+      }
+    });
+  });
+
+  formularioTr.querySelector("#botaoCancelar").addEventListener("click", () => {
+    formularioTr.remove();
+    inputNome.value = null;
+    inputUnidade.value = "UN";
+    inputValorTotal.value = null;
+    inputQuantidadePorEmbalagem = null;
+  });
+  formularioTr
+    .querySelector("#botaoSalvar")
+    .addEventListener("click", async (e) => {
+      const valorTotal = parseFloat(
+        inputValorTotal.value.replace(",", ".").replace(/[^\d.]/g, ""),
+      );
+
+      const quantidadePorEmbalagem = parseFloat(
+        inputQuantidadePorEmbalagem.value
+          .replace(",", ".")
+          .replace(/[^\d.]/g, ""),
+      );
+
+      if (
+        !inputNome.value.trim() ||
+        isNaN(valorTotal) ||
+        isNaN(quantidadePorEmbalagem)
+      ) {
+        return;
+      }
+
+      formularioTr.remove();
+      e.preventDefault();
+      let produtoParaCriar = {
+        nome: inputNome.value,
+        unidade: inputUnidade.value,
+        valorTotal: Number(valorTotal.toFixed(2)),
+        quantidadePorEmbalagem: Number(quantidadePorEmbalagem.toFixed(2)),
+        valorFracionado: Number(
+          (valorTotal.toFixed(2) / quantidadePorEmbalagem.toFixed(2)).toFixed(
+            2,
+          ),
+        ),
+      };
+      await criarProduto(produtoParaCriar);
+      adicionarInsumoNaTela(produtoParaCriar);
+    });
+  tbody.appendChild(formularioTr);
+  inputNome.focus();
 }
 
-addButton.addEventListener("click", () => {
-  fecharOuAbrirFormulário();
+addButton.addEventListener("click", (e) => {
+  e.stopPropagation();
+  abrirFormulário();
 });
 
 botaoCancelar.addEventListener("click", (e) => {
   e.preventDefault();
-  fecharOuAbrirFormulário();
-});
-
-formularioAdicionarInsumo.addEventListener("submit", (e) => {
-  e.preventDefault();
-  console.log("formulario enviado");
-  let produtoParaCriar = {
-    nome: inputNome.value,
-    unidade: inputUnidade.value,
-    valorTotal: Number(
-      parseFloat(
-        inputValorTotal.value.replace(",", ".").replace(/[^\d.]/g, ""),
-      ).toFixed(2),
-    ),
-    quantidadePorEmbalagem: Number(
-      parseFloat(
-        inputQuantidadePorEmbalagem.value
-          .replace(",", ".")
-          .replace(/[^\d.]/g, ""),
-      ).toFixed(2),
-    ),
-  };
-  criarProduto(produtoParaCriar);
-  fecharOuAbrirFormulário();
-  adicionarInsumoNaTela(produtoParaCriar);
-  corpoDaTabela.appendChild(linha);
+  abrirFormulário();
 });
