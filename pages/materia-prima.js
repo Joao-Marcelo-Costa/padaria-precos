@@ -12,12 +12,26 @@ const corpoDaTabela = document.querySelector(".table_body");
 function adicionarInsumoNaTela(objetoInsumo) {
   const corpoDaTabela = document.querySelector(".table_body");
   let tr = document.createElement("tr");
-  tr.innerHTML = `
-  <td>${objetoInsumo.nome}</td>
-  <td>${objetoInsumo.unidade}</td>
-  <td>R$${objetoInsumo.valorTotal},00</td>
-  <td>${objetoInsumo.quantidadePorEmbalagem}</td>
-  <td>${objetoInsumo.valorFracionado}R$/${objetoInsumo.unidade}</td>`;
+
+  const tdNome = document.createElement("td");
+  tdNome.innerHTML = `${objetoInsumo.nome}`;
+  tr.append(tdNome);
+
+  const tdUnidade = document.createElement("td");
+  tdUnidade.innerHTML = `${objetoInsumo.unidade}`;
+  tr.append(tdUnidade);
+
+  const tdValorTotal = document.createElement("td");
+  tdValorTotal.innerHTML = `${objetoInsumo.valorTotal}`;
+  tr.append(tdValorTotal);
+
+  const tdquantidadePorEmbalagem = document.createElement("td");
+  tdquantidadePorEmbalagem.innerHTML = `${objetoInsumo.quantidadePorEmbalagem}`;
+  tr.append(tdquantidadePorEmbalagem);
+
+  const tdValorFracionado = document.createElement("td");
+  tdValorFracionado.innerHTML = `${objetoInsumo.valorFracionado}R$/${objetoInsumo.unidade}`;
+  tr.append(tdValorFracionado);
 
   const tdButtons = document.createElement("td");
 
