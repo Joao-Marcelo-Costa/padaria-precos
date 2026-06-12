@@ -5,6 +5,7 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 
 export async function listarProdutos() {
@@ -22,4 +23,10 @@ export async function criarProduto(produto) {
 
 export async function excluirProduto(id) {
   await deleteDoc(doc(db, "produtos", id));
+}
+
+export async function editarProduto(id, produto) {
+  const produtoRef = doc(db, "produtos", id);
+
+  await updateDoc(produtoRef, produto);
 }
