@@ -1,15 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
-
-:root {
-  --cor_do_texto_fixo: #001857;
-}
-
-body {
-  background-color: #ffebca;
-  width: 100%;
-  height: 100%;
-}
-
 .insumos-main-title {
   font-family: "Oswald";
   font-optical-sizing: auto;
