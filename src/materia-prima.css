@@ -1,0 +1,125 @@
+.insumos-main-title {
+  font-family: "Oswald";
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 100px;
+  color: var(--cor_do_texto_fixo);
+  text-align: center;
+  margin: 20px 0 60px 0;
+}
+
+table {
+  width: 95%;
+  table-layout: fixed;
+}
+
+table thead tr,
+table tbody tr,
+table tbody tr input,
+table tbody tr select {
+  font-family: "Oswald";
+  font-optical-sizing: auto;
+  font-style: normal;
+  color: var(--cor_do_texto_fixo);
+  text-align: center;
+}
+
+table thead tr {
+  font-weight: 700;
+  font-size: 40px;
+}
+
+table tbody tr {
+  font-weight: 300;
+  font-size: 30px;
+}
+
+table thead tr button,
+table tbody tr td button {
+  stroke: none;
+  all: unset;
+}
+
+table tbody tr td button,
+table thead tr button img {
+  width: 50px;
+  height: 50px;
+  padding: 12px 0 0px 0;
+}
+
+table tbody tr td button {
+  padding: 12px 8px 8px 0;
+}
+
+table tbody tr button,
+table tbody tr button img {
+  width: 50px;
+  height: 50px;
+}
+table tbody tr button {
+  padding: 12px 0 8px 0;
+}
+
+.button-file {
+  width: 200px;
+}
+
+input,
+select,
+button,
+option {
+  background: none;
+  border: none;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+table tbody tr input::placeholder {
+  color: var(--cor_do_texto_fixo);
+  opacity: 1;
+}
+
+.formularioTr,
+.formularioTr input,
+.formularioTr select {
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: 30px;
+}
+
+#nome {
+  width: 65%;
+}
+#unidade {
+  width: 30%;
+}
+#valorTotal,
+#quantidade {
+  width: 45%;
+}
+
+.formularioTr input:focus,
+.formularioTr select:focus {
+  outline: none;
+  border: 1px solid var(--cor_do_texto_fixo);
+  box-shadow: none;
+  text-align: left;
+  padding: 8px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.formularioTr input:focus::placeholder {
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+}

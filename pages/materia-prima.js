@@ -1,4 +1,5 @@
 import "../src/style.css";
+import "../src/materia-prima.css";
 import {
   listarProdutos,
   criarProduto,
