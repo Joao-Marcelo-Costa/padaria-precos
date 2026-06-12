@@ -1,5 +1,10 @@
 import "../src/style.css";
-import { listarProdutos, criarProduto, excluirProduto } from "../src/api.js";
+import {
+  listarProdutos,
+  criarProduto,
+  excluirProduto,
+  editarProduto,
+} from "../src/api.js";
 import { query } from "firebase/firestore";
 
 const addButton = document.querySelector("#add_button");
@@ -12,6 +17,7 @@ const corpoDaTabela = document.querySelector(".table_body");
 function adicionarInsumoNaTela(objetoInsumo) {
   const corpoDaTabela = document.querySelector(".table_body");
   let tr = document.createElement("tr");
+  tr.dataset.id = objetoInsumo.id;
 
   const tdNome = document.createElement("td");
   tdNome.innerHTML = `${objetoInsumo.nome}`;
@@ -38,7 +44,59 @@ function adicionarInsumoNaTela(objetoInsumo) {
   const botaoEditar = document.createElement("button");
   botaoEditar.innerHTML =
     '<img src="/public/edit_icon.png" alt="botão de editar" />';
-  botaoEditar.addEventListener("click", () => {}); //vou criar o botão de editar depois de mexer no formulário de adição direito
+
+  function editarInsumo() {
+    tr.classList.add("formularioTr");
+    tdNome.innerHTML = `<input value = ${tdNome.textContent} type="text" id="nome" required />`;
+
+    tdUnidade.innerHTML = `
+     <select value="${tdUnidade.textContent}" id="unidade" required>
+        <option>UN</option>
+        <option>Kg</option>
+        <option>g</option>
+        <option>100g</option>
+        <option>L</option>
+        <option>mL</option>
+      </select>`;
+
+    tdValorTotal.innerHTML = `<input type="number" id="valorTotal" value="${tdValorTotal.textContent}" required/>`;
+
+    tdquantidadePorEmbalagem.innerHTML = `<input type="number" id="quantidade" value="${tdquantidadePorEmbalagem.innerHTML}" "required/>`;
+
+    const campos = [
+      tdNome.querySelector("input"),
+      tdUnidade.querySelector("select"),
+      tdValorTotal.querySelector("input"),
+      tdquantidadePorEmbalagem.querySelector("input"),
+    ];
+
+    configurarNavegacaoPorEnter(campos, fecharEdicao);
+    campos[0].focus();
+
+    async function fecharEdicao() {
+      const produtoEditado = {
+        nome: campos[0].value,
+        unidade: campos[1].value,
+        valorTotal: Number(campos[2].value),
+        quantidadePorEmbalagem: Number(campos[3].value),
+      };
+
+      const id = tr.dataset.id;
+
+      await editarProduto(id, produtoEditado);
+
+      tdNome.innerHTML = `${campos[0].value}`;
+      tdUnidade.innerHTML = `${campos[1].value}`;
+      tdValorTotal.innerHTML = `${campos[2].value}`;
+      tdquantidadePorEmbalagem.innerHTML = `${campos[3].value}`;
+      tr.classList.remove("formularioTr");
+      botaoEditar.onclick = editarInsumo;
+    }
+
+    botaoEditar.onclick = fecharEdicao;
+  }
+
+  botaoEditar.onclick = editarInsumo;
 
   const botaoDeletar = document.createElement("button");
   botaoDeletar.innerHTML =
@@ -56,6 +114,24 @@ function adicionarInsumoNaTela(objetoInsumo) {
   tr.appendChild(tdButtons);
 
   corpoDaTabela.appendChild(tr);
+}
+
+function configurarNavegacaoPorEnter(campos, callbackFinal) {
+  campos.forEach((campo, indice) => {
+    campo.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+
+      e.preventDefault();
+
+      const proximoCampo = campos[indice + 1];
+
+      if (proximoCampo) {
+        proximoCampo.focus();
+      } else {
+        callbackFinal();
+      }
+    });
+  });
 }
 
 async function carregarInsumos() {
@@ -115,21 +191,11 @@ function abrirFormulário() {
     inputValorTotal,
     inputQuantidadePorEmbalagem,
   ];
-  campos.forEach((campo, indice) => {
-    campo.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter") return;
 
-      e.preventDefault();
-
-      const proximoCampo = campos[indice + 1];
-
-      if (proximoCampo) {
-        proximoCampo.focus();
-      } else {
-        document.getElementById("botaoSalvar").click();
-      }
-    });
-  });
+  configurarNavegacaoPorEnter(
+    campos,
+    document.getElementById("botaoSalvar").click(),
+  );
 
   formularioTr.querySelector("#botaoCancelar").addEventListener("click", () => {
     formularioTr.remove();
