@@ -181,10 +181,10 @@ function abrirFormulário() {
     <button id="botaoSalvar" type="submit">Salvar</button>
   </td>`;
 
-  const inputNome = formularioTr.querySelector("#nome");
-  const inputUnidade = formularioTr.querySelector("#unidade");
-  const inputValorTotal = formularioTr.querySelector("#valorTotal");
-  const inputQuantidadePorEmbalagem = formularioTr.querySelector("#quantidade");
+  let inputNome = formularioTr.querySelector("#nome");
+  let inputUnidade = formularioTr.querySelector("#unidade");
+  let inputValorTotal = formularioTr.querySelector("#valorTotal");
+  let inputQuantidadePorEmbalagem = formularioTr.querySelector("#quantidade");
 
   const campos = [
     inputNome,
