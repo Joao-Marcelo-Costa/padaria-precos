@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
+
+.recepies {
+  margin: 0 40px 0 40px;
+}
+.recepies header div {
+  display: flex;
+  align-items: baseline;
+  justify-content: baseline;
+}
+h3 {
+  font-family: "Oswald";
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 40px;
+  color: var(--cor_do_texto_fixo);
+  text-align: left;
+  margin-bottom: 0;
+}
+
+.button_add_recepies,
+.button_add_recepies img {
+  stroke: none;
+  all: unset;
+  width: 40px;
+  height: 40px;
+}
+.button_add_recepies {
+  height: 50px;
+}
+
+.button_add_recepies img {
+  padding-top: 10px;
+}
+.receitas_line {
+  border: 2px, solid, var(--cor_do_texto_fixo);
+}
