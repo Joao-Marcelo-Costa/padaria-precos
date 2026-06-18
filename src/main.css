@@ -9,7 +9,8 @@
   justify-content: baseline;
 }
 h3,
-h4 {
+h4,
+label {
   font-family: "Oswald";
   font-optical-sizing: auto;
   font-weight: 900;
@@ -21,9 +22,12 @@ h4 {
 }
 
 .button_add_recepies,
+.button_add_recepies,
 .button_add_recepies img,
 .close_button,
-.close_button img {
+.close_button img,
+.add_insume_button,
+.add_insume_button img {
   stroke: none;
   all: unset;
   width: 40px;
@@ -66,4 +70,15 @@ h4 {
   text-align: center;
   font-size: 50px;
   margin-top: 20px;
+}
+.add_insume_button,
+.add_insume_button img {
+  width: 40px;
+  height: 40px;
+  transform: translateY(3px);
+  margin-left: 3px;
+}
+
+.add_recepie_window label {
+  text-align: left;
 }

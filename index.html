@@ -23,7 +23,6 @@
             <img src="/public/add_icon.png" alt="botão de adicionar receitas" />
           </button>
         </div>
-
         <hr class="receitas_line" />
       </header>
     </section>
@@ -40,8 +39,15 @@
         placeholder="Nome da receita"
         required
       />
-      <label for="receitaPreco">Preço da receita</label>
-      <input type="text" id="receitaPreco" placeholder="R$0,00" required />
+      <div class="add_insume_container">
+        <header>
+          <label for="add_insume_button">Insumos</label>
+          <button class="add_insume_button" id="add_insume_button">
+            <img src="/public/add_icon.png" alt="botão de adicionar insumo" />
+          </button>
+          <hr class="receitas_line" />
+        </header>
+      </div>
       <button id="cancelar">Cancelar</button>
       <button id="salvar">Salvar</button>
     </dialog>
