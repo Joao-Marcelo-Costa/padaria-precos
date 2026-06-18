@@ -2,10 +2,11 @@
 
 :root {
   --cor_do_texto_fixo: #001857;
+  --cor_do_fundo: #ffebca;
 }
 
 body {
-  background-color: #ffebca;
+  background-color: var(--cor_do_fundo);
   width: 100%;
   height: 100%;
 }

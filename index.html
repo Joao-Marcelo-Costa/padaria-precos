@@ -28,5 +28,19 @@
       </header>
     </section>
     <script type="module" src="/src/script.js"></script>
+    <dialog class="add_recepie_window">
+      <h4>Adicionar Receita</h4>
+      <label for="receitaNome">Nome da receita</label>
+      <input
+        type="text"
+        id="receitaNome"
+        placeholder="Nome da receita"
+        required
+      />
+      <label for="receitaPreco">Preço da receita</label>
+      <input type="text" id="receitaPreco" placeholder="R$0,00" required />
+      <button id="cancelar">Cancelar</button>
+      <button id="salvar">Salvar</button>
+    </dialog>
   </body>
 </html>
