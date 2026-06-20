@@ -54,6 +54,7 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
 
   const tdPreçoTotal = document.createElement("td");
   const preçoTotal = document.createElement("p");
+  preçoTotal.classList.add("preçoTotal_text");
   tdPreçoTotal.appendChild(preçoTotal);
 
   trInsumo.appendChild(tdSelectInsumo);

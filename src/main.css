@@ -39,12 +39,17 @@ h4 {
 table tbody tr td label,
 table tbody tr td input,
 table tbody tr td select,
-table tbody tr td p {
+table tbody tr td p,
+input {
   font-weight: 300;
   font-size: 40px;
   margin: 0 0 0 0;
+  text-align: left;
 }
-
+table {
+  width: 90%;
+  table-layout: fixed;
+}
 .button_add_recepies,
 .button_add_recepies,
 .button_add_recepies img,
