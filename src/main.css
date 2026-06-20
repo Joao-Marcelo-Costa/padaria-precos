@@ -10,15 +10,35 @@
 }
 h3,
 h4,
-label {
+label,
+input,
+select,
+p {
   font-family: "Oswald";
   font-optical-sizing: auto;
-  font-weight: 900;
   font-style: normal;
-  font-size: 40px;
   color: var(--cor_do_texto_fixo);
   text-align: left;
+}
+
+h3,
+h4,
+label,
+input,
+select,
+p {
+  font-weight: 900;
+  font-size: 40px;
   margin-bottom: 0;
+}
+
+table tbody tr td label,
+table tbody tr td input,
+table tbody tr td select,
+table tbody tr td p {
+  font-weight: 300;
+  font-size: 40px;
+  margin: 0 0 0 0;
 }
 
 .button_add_recepies,
@@ -81,4 +101,10 @@ label {
 
 .add_recepie_window label {
   text-align: left;
+}
+
+input,
+select,
+p {
+  text-align: center;
 }

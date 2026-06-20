@@ -5,7 +5,7 @@ import { query } from "firebase/firestore";
 
 const btAdicionarReceita = document.querySelector(".button_add_recepies");
 const janelaAdicionarReceita = document.querySelector(".add_recepie_window");
-const tabelaInsumosReceita = document.querySelector(".add_insume_table");
+const tabelaInsumosReceita = document.querySelector(".add_insume_table_tbody");
 const btAdicionarInsumoNaReceita = document.querySelector(".add_insume_button");
 const listaDeInsumos = await listarProdutos();
 let insumoSelecionadoId = "";
@@ -21,6 +21,7 @@ botaoFechar.addEventListener("click", () => {
 });
 
 btAdicionarInsumoNaReceita.addEventListener("click", () => {
+  const trNovoInsumo = document.createElement("tr");
   const tdSelectNovoInsumo = document.createElement("td");
   const selectNovoInsumo = document.createElement("select");
   tdSelectNovoInsumo.appendChild(selectNovoInsumo);
@@ -32,13 +33,13 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
     selectNovoInsumo.appendChild(optionInsumos);
   });
 
-  selectNovoInsumo.onchange = function () {
+  function selecionarElementosInsumo() {
     let insumoSelecionadoId = this.value;
     let insumoSelecionado = listaDeInsumos.find(
       (elemento) => elemento.id === insumoSelecionadoId,
     );
     preçoPorQuantidade.innerText = `${insumoSelecionado.valorFracionado}R$/${insumoSelecionado.unidade}`;
-  };
+  }
 
   const tdQuantidadeInsumoInput = document.createElement("td");
   const quantidadeInsumoInput = document.createElement("input");
@@ -49,7 +50,12 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
   const preçoPorQuantidade = document.createElement("p");
   tdPreçoPorQuantidade.appendChild(preçoPorQuantidade);
 
-  tabelaInsumosReceita.appendChild(tdSelectNovoInsumo);
-  tabelaInsumosReceita.appendChild(tdQuantidadeInsumoInput);
-  tabelaInsumosReceita.appendChild(tdPreçoPorQuantidade);
+  trNovoInsumo.appendChild(tdSelectNovoInsumo);
+  trNovoInsumo.appendChild(tdQuantidadeInsumoInput);
+  trNovoInsumo.appendChild(tdPreçoPorQuantidade);
+
+  tabelaInsumosReceita.appendChild(trNovoInsumo);
+
+  selecionarElementosInsumo.call(selectNovoInsumo);
+  selectNovoInsumo.onchange = selecionarElementosInsumo;
 });
