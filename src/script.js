@@ -21,10 +21,10 @@ botaoFechar.addEventListener("click", () => {
 });
 
 btAdicionarInsumoNaReceita.addEventListener("click", () => {
-  const trNovoInsumo = document.createElement("tr");
-  const tdSelectNovoInsumo = document.createElement("td");
+  const trInsumo = document.createElement("tr");
+  const tdSelectInsumo = document.createElement("td");
   const selectNovoInsumo = document.createElement("select");
-  tdSelectNovoInsumo.appendChild(selectNovoInsumo);
+  tdSelectInsumo.appendChild(selectNovoInsumo);
 
   listaDeInsumos.forEach((insumo) => {
     const optionInsumos = document.createElement("option");
@@ -33,29 +33,39 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
     selectNovoInsumo.appendChild(optionInsumos);
   });
 
-  function selecionarElementosInsumo() {
+  function pergarPropiedadesElementoInsumo() {
     let insumoSelecionadoId = this.value;
     let insumoSelecionado = listaDeInsumos.find(
       (elemento) => elemento.id === insumoSelecionadoId,
     );
     preçoPorQuantidade.innerText = `${insumoSelecionado.valorFracionado}R$/${insumoSelecionado.unidade}`;
+    quantidadeInsumoInput.placeholder = `quantidade em ${insumoSelecionado.unidade}`;
+
+    preçoTotal.innerText = `R$${insumoSelecionado.valorFracionado * quantidadeInsumoInput.value}`;
   }
 
   const tdQuantidadeInsumoInput = document.createElement("td");
   const quantidadeInsumoInput = document.createElement("input");
-  quantidadeInsumoInput.placeholder = "quantidade";
   tdQuantidadeInsumoInput.appendChild(quantidadeInsumoInput);
 
   const tdPreçoPorQuantidade = document.createElement("td");
   const preçoPorQuantidade = document.createElement("p");
   tdPreçoPorQuantidade.appendChild(preçoPorQuantidade);
 
-  trNovoInsumo.appendChild(tdSelectNovoInsumo);
-  trNovoInsumo.appendChild(tdQuantidadeInsumoInput);
-  trNovoInsumo.appendChild(tdPreçoPorQuantidade);
+  const tdPreçoTotal = document.createElement("td");
+  const preçoTotal = document.createElement("p");
+  tdPreçoTotal.appendChild(preçoTotal);
 
-  tabelaInsumosReceita.appendChild(trNovoInsumo);
+  trInsumo.appendChild(tdSelectInsumo);
+  trInsumo.appendChild(tdQuantidadeInsumoInput);
+  trInsumo.appendChild(tdPreçoPorQuantidade);
+  trInsumo.appendChild(tdPreçoTotal);
 
-  selecionarElementosInsumo.call(selectNovoInsumo);
-  selectNovoInsumo.onchange = selecionarElementosInsumo;
+  tabelaInsumosReceita.appendChild(trInsumo);
+
+  pergarPropiedadesElementoInsumo.call(selectNovoInsumo);
+  quantidadeInsumoInput.addEventListener("change", () => {
+    pergarPropiedadesElementoInsumo.call(selectNovoInsumo);
+  });
+  selectNovoInsumo.onchange = pergarPropiedadesElementoInsumo;
 });

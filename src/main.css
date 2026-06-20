@@ -32,6 +32,10 @@ p {
   margin-bottom: 0;
 }
 
+h4 {
+  margin-bottom: 20px;
+}
+
 table tbody tr td label,
 table tbody tr td input,
 table tbody tr td select,

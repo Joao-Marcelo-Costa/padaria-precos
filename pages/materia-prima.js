@@ -71,7 +71,9 @@ function adicionarInsumoNaTela(objetoInsumo) {
       tdquantidadePorEmbalagem.querySelector("input"),
     ];
 
-    configurarNavegacaoPorEnter(campos, fecharEdicao);
+    configurarNavegacaoPorEnter(campos, () => {
+      botaoEditar.click();
+    });
     campos[0].focus();
 
     async function fecharEdicao() {
@@ -192,11 +194,9 @@ function abrirFormulário() {
     inputValorTotal,
     inputQuantidadePorEmbalagem,
   ];
-
-  configurarNavegacaoPorEnter(
-    campos,
-    document.getElementById("botaoSalvar").click(),
-  );
+  configurarNavegacaoPorEnter(campos, () => {
+    document.getElementById("botaoSalvar").click();
+  });
 
   formularioTr.querySelector("#botaoCancelar").addEventListener("click", () => {
     formularioTr.remove();
