@@ -30,3 +30,22 @@ export async function editarProduto(id, produto) {
 
   await updateDoc(produtoRef, produto);
 }
+
+export async function criarReceita(receita) {
+  const docRef = await addDoc(collection(db, "receitas"), receita);
+
+  return docRef.id;
+}
+
+export async function buscarReceitas() {
+  const snapshot = await getDocs(collection(db, "receitas"));
+
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+}
+
+export async function editarReceita(id, dados) {
+  await updateDoc(doc(db, "receitas", id), dados);
+}

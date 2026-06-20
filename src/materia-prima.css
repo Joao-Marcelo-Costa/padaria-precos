@@ -65,18 +65,6 @@ table tbody tr button {
   width: 200px;
 }
 
-input,
-select,
-button,
-option {
-  background: none;
-  border: none;
-  background: transparent;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
 table tbody tr input::placeholder {
   color: var(--cor_do_texto_fixo);
   opacity: 1;

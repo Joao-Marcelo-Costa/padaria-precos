@@ -8,19 +8,55 @@
   align-items: baseline;
   justify-content: baseline;
 }
-h3 {
+h3,
+h4,
+label,
+input,
+select,
+p {
   font-family: "Oswald";
   font-optical-sizing: auto;
-  font-weight: 900;
   font-style: normal;
-  font-size: 40px;
   color: var(--cor_do_texto_fixo);
   text-align: left;
+}
+
+h3,
+h4,
+label,
+input,
+select,
+p {
+  font-weight: 900;
+  font-size: 40px;
   margin-bottom: 0;
 }
 
+h4 {
+  margin-bottom: 20px;
+}
+
+table tbody tr td label,
+table tbody tr td input,
+table tbody tr td select,
+table tbody tr td p,
+input {
+  font-weight: 300;
+  font-size: 40px;
+  margin: 0 0 0 0;
+  text-align: left;
+}
+table {
+  width: 90%;
+  table-layout: fixed;
+}
 .button_add_recepies,
-.button_add_recepies img {
+.button_add_recepies,
+.button_add_recepies img,
+.close_button,
+.close_button img,
+.add_insume_button,
+.add_insume_button img {
   stroke: none;
   all: unset;
   width: 40px;
@@ -28,6 +64,8 @@ h3 {
 }
 .button_add_recepies {
   height: 50px;
+  transform: translateY(6px);
+  margin-left: 10px;
 }
 
 .button_add_recepies img {
@@ -35,4 +73,47 @@ h3 {
 }
 .receitas_line {
   border: 2px, solid, var(--cor_do_texto_fixo);
+}
+
+.add_recepie_window {
+  width: 90%;
+  height: 90%;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--cor_do_fundo);
+}
+
+.close_button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.close_button,
+.close_button img {
+  width: 50px;
+  height: 50px;
+}
+
+.add_recepie_window h4 {
+  text-align: center;
+  font-size: 50px;
+  margin-top: 20px;
+}
+.add_insume_button,
+.add_insume_button img {
+  width: 40px;
+  height: 40px;
+  transform: translateY(3px);
+  margin-left: 3px;
+}
+
+.add_recepie_window label {
+  text-align: left;
+}
+
+input,
+select,
+p {
+  text-align: center;
 }

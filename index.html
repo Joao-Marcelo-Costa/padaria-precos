@@ -23,10 +23,39 @@
             <img src="/public/add_icon.png" alt="botão de adicionar receitas" />
           </button>
         </div>
-
         <hr class="receitas_line" />
       </header>
     </section>
+
+    <dialog class="add_recepie_window">
+      <button class="close_button">
+        <img src="/public/close_icon.png" alt="botão de fechar janela" />
+      </button>
+      <h4>Adicionar Receita</h4>
+      <label for="receitaNome">Nome da receita</label>
+      <input
+        type="text"
+        id="receitaNome"
+        placeholder="Nome da receita"
+        required
+      />
+
+      <div class="add_insume_container">
+        <header>
+          <label for="add_insume_button">ingredientes</label>
+          <button class="add_insume_button" id="add_insume_button">
+            <img src="/public/add_icon.png" alt="botão de adicionar insumo" />
+          </button>
+          <hr class="receitas_line" />
+        </header>
+        <table class="add_insume_table">
+          <tbody class="add_insume_table_tbody"></tbody>
+        </table>
+      </div>
+      <button id="cancelar">Cancelar</button>
+      <button id="salvar">Salvar</button>
+    </dialog>
+
     <script type="module" src="/src/script.js"></script>
   </body>
 </html>
