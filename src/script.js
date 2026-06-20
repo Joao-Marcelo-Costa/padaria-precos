@@ -1,5 +1,5 @@
-import "./style.css";
 import "./main.css";
+import "./style.css";
 import { listarProdutos } from "../src/api.js";
 import { query } from "firebase/firestore";
 
@@ -8,6 +8,7 @@ const janelaAdicionarReceita = document.querySelector(".add_recepie_window");
 const tabelaInsumosReceita = document.querySelector(".add_insume_table");
 const btAdicionarInsumoNaReceita = document.querySelector(".add_insume_button");
 const listaDeInsumos = await listarProdutos();
+let insumoSelecionadoId = "";
 
 btAdicionarReceita.addEventListener("click", () => {
   janelaAdicionarReceita.showModal();
@@ -20,28 +21,35 @@ botaoFechar.addEventListener("click", () => {
 });
 
 btAdicionarInsumoNaReceita.addEventListener("click", () => {
-  const linhaSelectNovoInsumo = document.createElement("td");
+  const tdSelectNovoInsumo = document.createElement("td");
   const selectNovoInsumo = document.createElement("select");
-  linhaSelectNovoInsumo.appendChild(selectNovoInsumo);
+  tdSelectNovoInsumo.appendChild(selectNovoInsumo);
 
   listaDeInsumos.forEach((insumo) => {
-    console.log(insumo);
     const optionInsumos = document.createElement("option");
     optionInsumos.value = insumo.id;
     optionInsumos.textContent = insumo.nome;
     selectNovoInsumo.appendChild(optionInsumos);
   });
-  tabelaInsumosReceita.appendChild(linhaSelectNovoInsumo);
 
-  const linhaQuantidadeInsumoInput = document.createElement("td");
+  selectNovoInsumo.onchange = function () {
+    let insumoSelecionadoId = this.value;
+    let insumoSelecionado = listaDeInsumos.find(
+      (elemento) => elemento.id === insumoSelecionadoId,
+    );
+    preçoPorQuantidade.innerText = `${insumoSelecionado.valorFracionado}R$/${insumoSelecionado.unidade}`;
+  };
+
+  const tdQuantidadeInsumoInput = document.createElement("td");
   const quantidadeInsumoInput = document.createElement("input");
-  linhaQuantidadeInsumoInput.appendChild(quantidadeInsumoInput);
   quantidadeInsumoInput.placeholder = "quantidade";
+  tdQuantidadeInsumoInput.appendChild(quantidadeInsumoInput);
 
-  const linhaPreçoPorQuantidade = document.createElement("td");
+  const tdPreçoPorQuantidade = document.createElement("td");
   const preçoPorQuantidade = document.createElement("p");
-  preçoPorQuantidade.innerText = `${insumo.preçoPorQuantidade}`;
-  linhaPreçoPorQuantidade.appendChild(preçoPorQuantidade);
-  tabelaInsumosReceita.appendChild(linhaPreçoPorQuantidade);
-  tabelaInsumosReceita.appendChild(linhaQuantidadeInsumoInput);
+  tdPreçoPorQuantidade.appendChild(preçoPorQuantidade);
+
+  tabelaInsumosReceita.appendChild(tdSelectNovoInsumo);
+  tabelaInsumosReceita.appendChild(tdQuantidadeInsumoInput);
+  tabelaInsumosReceita.appendChild(tdPreçoPorQuantidade);
 });

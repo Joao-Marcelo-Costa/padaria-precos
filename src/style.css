@@ -25,3 +25,15 @@ h1 {
 .hidden {
   display: none;
 }
+
+input,
+select,
+button,
+option {
+  background: none;
+  border: none;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
