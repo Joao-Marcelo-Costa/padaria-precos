@@ -24,6 +24,7 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
   const trInsumo = document.createElement("tr");
   const tdSelectInsumo = document.createElement("td");
   const selectNovoInsumo = document.createElement("select");
+  tdSelectInsumo.classList.add("td_insume_selector");
   tdSelectInsumo.appendChild(selectNovoInsumo);
 
   listaDeInsumos.forEach((insumo) => {
@@ -46,6 +47,7 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
 
   const tdQuantidadeInsumoInput = document.createElement("td");
   const quantidadeInsumoInput = document.createElement("input");
+  quantidadeInsumoInput.classList.add("quantidade_insumo_input");
   tdQuantidadeInsumoInput.appendChild(quantidadeInsumoInput);
 
   const tdPreçoPorQuantidade = document.createElement("td");

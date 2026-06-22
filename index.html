@@ -37,21 +37,21 @@
         type="text"
         id="receitaNome"
         placeholder="Nome da receita"
+        class="bt_add_recepie_name"
         required
       />
 
-      <div class="add_insume_container">
-        <header>
-          <label for="add_insume_button">ingredientes</label>
-          <button class="add_insume_button" id="add_insume_button">
-            <img src="/public/add_icon.png" alt="botão de adicionar insumo" />
-          </button>
-          <hr class="receitas_line" />
-        </header>
-        <table class="add_insume_table">
-          <tbody class="add_insume_table_tbody"></tbody>
-        </table>
-      </div>
+      <header>
+        <label for="add_insume_button">ingredientes</label>
+        <button class="add_insume_button" id="add_insume_button">
+          <img src="/public/add_icon.png" alt="botão de adicionar insumo" />
+        </button>
+        <hr class="receitas_line" />
+      </header>
+
+      <table class="add_insume_table">
+        <tbody class="add_insume_table_tbody"></tbody>
+      </table>
       <button id="cancelar">Cancelar</button>
       <button id="salvar">Salvar</button>
     </dialog>
