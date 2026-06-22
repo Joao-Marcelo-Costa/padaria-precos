@@ -39,23 +39,6 @@ h4 {
   margin-bottom: 20px;
 }
 
-table tbody tr td label,
-table tbody tr td input,
-table tbody tr td select,
-table tbody tr td p,
-input {
-  font-family: "Oswald";
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 40px;
-  margin: 0 0 0 0;
-  text-align: left;
-}
-table {
-  table-layout: auto;
-}
-
 .button_add_recepies,
 .button_add_recepies,
 .button_add_recepies img,
@@ -68,6 +51,7 @@ table {
   width: 40px;
   height: 40px;
 }
+
 .button_add_recepies {
   height: 50px;
   transform: translateY(6px);
@@ -115,6 +99,23 @@ table {
   margin-left: 3px;
 }
 
+table tbody tr td label,
+table tbody tr td input,
+table tbody tr td select,
+table tbody tr td p,
+input {
+  font-family: "Oswald";
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 40px;
+  margin: 0 0 0 0;
+  text-align: left;
+}
+
+table {
+  table-layout: auto;
+}
 .add_recepie_window label {
   text-align: left;
 }

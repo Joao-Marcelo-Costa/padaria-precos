@@ -8,6 +8,7 @@ const janelaAdicionarReceita = document.querySelector(".add_recepie_window");
 const tabelaInsumosReceita = document.querySelector(".add_insume_table_tbody");
 const btAdicionarInsumoNaReceita = document.querySelector(".add_insume_button");
 const listaDeInsumos = await listarProdutos();
+const btCancelar = document.querySelector(".cancel_button");
 let insumoSelecionadoId = "";
 
 btAdicionarReceita.addEventListener("click", () => {
@@ -57,6 +58,7 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
       quantidadeInsumoInput.style.textAlign = "left";
     }
   });
+
   quantidadeInsumoInput.classList.add("quantidade_insumo_input");
   tdQuantidadeInsumoInput.appendChild(quantidadeInsumoInput);
 
@@ -81,4 +83,8 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
     pergarPropiedadesElementoInsumo.call(selectNovoInsumo);
   });
   selectNovoInsumo.onchange = pergarPropiedadesElementoInsumo;
+});
+
+btCancelar.addEventListener("click", () => {
+  janelaAdicionarReceita.close();
 });
