@@ -47,6 +47,16 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
 
   const tdQuantidadeInsumoInput = document.createElement("td");
   const quantidadeInsumoInput = document.createElement("input");
+  quantidadeInsumoInput.addEventListener("change", () => {
+    debugger;
+    if (quantidadeInsumoInput.value.length > 0) {
+      quantidadeInsumoInput.style.width = `${quantidadeInsumoInput.value.length + 2}ch`;
+      quantidadeInsumoInput.style.textAlign = "center";
+    } else {
+      quantidadeInsumoInput.style.width = "";
+      quantidadeInsumoInput.style.textAlign = "left";
+    }
+  });
   quantidadeInsumoInput.classList.add("quantidade_insumo_input");
   tdQuantidadeInsumoInput.appendChild(quantidadeInsumoInput);
 
