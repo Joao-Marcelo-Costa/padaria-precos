@@ -1,6 +1,6 @@
 import "./main.css";
 import "./style.css";
-import { listarProdutos } from "../src/api.js";
+import { listarProdutos, criarReceita } from "../src/api.js";
 import { doc, query } from "firebase/firestore";
 
 const inputNomeDaReceita = document.querySelector(".add_recepie_name");
@@ -73,7 +73,6 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
   const tdQuantidadeInsumoInput = document.createElement("td");
   const quantidadeInsumoInput = document.createElement("input");
   quantidadeInsumoInput.addEventListener("change", () => {
-    debugger;
     if (quantidadeInsumoInput.value.length > 0) {
       quantidadeInsumoInput.style.width = `${quantidadeInsumoInput.value.length + 2}ch`;
       quantidadeInsumoInput.style.textAlign = "center";
@@ -81,6 +80,7 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
       quantidadeInsumoInput.style.width = "";
       quantidadeInsumoInput.style.textAlign = "left";
     }
+    quantidadeInsumoInput.classList.remove("input_invalido");
   });
 
   quantidadeInsumoInput.classList.add("quantidade_insumo_input");
@@ -115,10 +115,33 @@ btCancelar.addEventListener("click", () => {
 });
 
 btSalvar.addEventListener("click", () => {
-  receitaAtual.nome = inputNomeDaReceita.value;
+  let valido = true;
+
+  if (!inputNomeDaReceita.value.trim()) {
+    inputNomeDaReceita.classList.add("invalid_input");
+    valido = false;
+  } else {
+    inputNomeDaReceita.classList.remove("invalid_input");
+  }
+
+  tabelaInsumosReceita
+    .querySelectorAll(".quantidade_insumo_input")
+    .forEach((input) => {
+      if (!input.value || Number(input.value) <= 0) {
+        input.classList.add("invalid_input");
+        valido = false;
+      } else {
+        input.classList.remove("invalid_input");
+      }
+    });
+
+  if (!valido) return;
+
+  receitaAtual.nome = inputNomeDaReceita.value.trim();
   receitaAtual.valor_total = receitaAtual.insumos.reduce(
     (acumulador, insumo) => acumulador + (insumo.valorTotal ?? 0),
     0,
   );
+  criarReceita(receitaAtual);
   console.log(receitaAtual);
 });

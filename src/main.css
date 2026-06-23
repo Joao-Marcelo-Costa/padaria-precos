@@ -134,7 +134,10 @@ table {
 .quantidade_insumo_input {
   width: 255px;
 }
-
+.invalid_input {
+  border: 2px solid rgb(187, 0, 0);
+  border-radius: 5px;
+}
 .add_recepie_name {
   margin-left: 20px;
 }
