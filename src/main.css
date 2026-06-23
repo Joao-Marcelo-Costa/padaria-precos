@@ -40,7 +40,6 @@ h4 {
 }
 
 .button_add_recepies,
-.button_add_recepies,
 .button_add_recepies img,
 .close_button,
 .close_button img,
@@ -136,7 +135,7 @@ table {
   width: 255px;
 }
 
-.bt_add_recepie_name {
+.add_recepie_name {
   margin-left: 20px;
 }
 
