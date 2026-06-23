@@ -1,9 +1,10 @@
 import "./main.css";
 import "./style.css";
-import { listarProdutos, criarReceita } from "../src/api.js";
+import { listarProdutos, criarReceita, buscarReceitas } from "../src/api.js";
 import { doc, query } from "firebase/firestore";
 
 const inputNomeDaReceita = document.querySelector(".add_recepie_name");
+const inputRendimentoDaReceita = document.querySelector(".add_recipie_amount");
 const btAdicionarReceita = document.querySelector(".button_add_recepies");
 const janelaAdicionarReceita = document.querySelector(".add_recepie_window");
 const tabelaInsumosReceita = document.querySelector(".add_insume_table_tbody");
@@ -11,6 +12,9 @@ const btAdicionarInsumoNaReceita = document.querySelector(".add_insume_button");
 const listaDeInsumos = await listarProdutos();
 const btCancelar = document.querySelector(".cancel_button");
 const btSalvar = document.querySelector(".save_button");
+const listaDeReceitas = await buscarReceitas();
+const sectionReceitas = document.querySelector(".recepies_section");
+
 let insumoSelecionadoId = "";
 let receitaAtual = {
   nome: "",
@@ -66,7 +70,7 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
     preçoTotal.innerText = `R$${insumoSelecionado.valorFracionado * quantidadeInsumoInput.value}`;
     let indexInsumo = 0;
     receitaAtual.insumos[indexInsumoAtual] = {
-      idInsumo: insumoSelecionadoId,
+      id: insumoSelecionadoId,
       nome: insumoSelecionado.nome,
       quantidade: Number(quantidadeInsumoInput.value),
     };
@@ -105,7 +109,9 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
   const insumeDeleteButtonImg = document.createElement("img");
   insumeDeleteButton.appendChild(insumeDeleteButtonImg);
   insumeDeleteButtonImg.src = "../public/delete_icon.png";
+  insumeDeleteButtonImg.alt = "botão de deletar receita";
   insumeDeleteButton.addEventListener("click", () => {
+    receitaAtual.insumos.splice(indexInsumoAtual, 1);
     trInsumo.remove();
   });
 
@@ -120,7 +126,7 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
   atualizarInsumo.call(selectNovoInsumo);
   quantidadeInsumoInput.addEventListener("change", () => {
     atualizarInsumo.call(selectNovoInsumo);
-    quantidadeInsumoInput.classList.remove("input_invalido");
+    quantidadeInsumoInput.classList.remove("invalid_input");
   });
   selectNovoInsumo.onchange = atualizarInsumo;
 });
@@ -132,7 +138,7 @@ btCancelar.addEventListener("click", () => {
 });
 
 inputNomeDaReceita.addEventListener("input", () => {
-  inputNomeDaReceita.classList.remove("input_invalido");
+  inputNomeDaReceita.classList.remove("invalid_input");
 });
 
 btSalvar.addEventListener("click", async () => {
@@ -162,11 +168,67 @@ btSalvar.addEventListener("click", async () => {
   if (!valid_insume) return;
   try {
     receitaAtual.nome = inputNomeDaReceita.value.trim();
+    receitaAtual.rendimento = inputRendimentoDaReceita.value.trim();
     await criarReceita(receitaAtual);
     resetarJanelaAdicionarReceitas();
     janelaAdicionarReceita.close();
   } catch (error) {
-    console.error("Erro ao salvar:", erro);
+    console.error("Erro ao salvar:", error);
     alert("Erro ao salvar a receita, tente novamente.");
   }
+});
+
+function adicionarElementoReceita(objetoReceita) {
+  const divReceita = document.createElement("div");
+  divReceita.classList.add("main_recepie_div");
+
+  divReceita.innerHTML = `
+  <div class="header_recepie_div">
+    <h5>${objetoReceita.nome}</h5>
+    <button class="edit_recepie_buttton">
+    <img src="../public/edit_icon.png" alt="imagem botão editar receita">
+    </button>
+  </div>
+  <table class="recepie_insume_table"></table>
+  `;
+  const tabelaReceita = divReceita.querySelector(".recepie_insume_table");
+
+  sectionReceitas.appendChild(divReceita);
+
+  let custoTotalDaReceita = 0;
+  objetoReceita.insumos.forEach((insumoDaReceita) => {
+    let insumoReal = listaDeInsumos.find(
+      (insumo) => insumo.id === insumoDaReceita.id,
+    );
+    console.log(insumoReal);
+    let custoDesseInsumo =
+      insumoReal.valorFracionado * insumoDaReceita.quantidade;
+    custoTotalDaReceita = custoTotalDaReceita + custoDesseInsumo;
+
+    const tdInsumoAtualNome = document.createElement("td");
+    tdInsumoAtualNome.innerHTML = `<p class="recipies_insume_name_text">${insumoReal.nome}</p>`;
+
+    const tdInsumoAtualQuantidade = document.createElement("td");
+    tdInsumoAtualQuantidade.innerHTML = `<p>${insumoDaReceita.quantidade}${insumoReal.unidade}</p>`;
+
+    const tdInsumoAtualPreço = document.createElement("td");
+    tdInsumoAtualPreço.innerHTML = `<p>R$${Number(insumoReal.valorFracionado * insumoDaReceita.quantidade).toFixed(2)}</p>`;
+
+    const trInsumoAtual = document.createElement("tr");
+    trInsumoAtual.appendChild(tdInsumoAtualNome);
+    trInsumoAtual.appendChild(tdInsumoAtualQuantidade);
+    trInsumoAtual.appendChild(tdInsumoAtualPreço);
+
+    tabelaReceita.appendChild(trInsumoAtual);
+  });
+
+  divReceita.innerHTML += `
+  <div>
+  <p>R$${custoTotalDaReceita.toFixed(2)}</p>
+  <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}</p></div>
+`;
+}
+
+listaDeReceitas.forEach((receita) => {
+  adicionarElementoReceita(receita);
 });

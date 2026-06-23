@@ -10,6 +10,7 @@
 }
 h3,
 h4,
+h5,
 label,
 select,
 p,
@@ -143,7 +144,8 @@ table {
   border: 2px solid rgb(187, 0, 0);
   border-radius: 5px;
 }
-.add_recepie_name {
+.add_recepie_name,
+.add_recipie_amount {
   margin-left: 20px;
 }
 
@@ -160,4 +162,51 @@ dialog .add_receipe_window_conteiner {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+.recepies_section {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.header_recepie_div {
+  margin-top: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.recepies_section div h5 {
+  margin: 0 0 0 20px;
+}
+.main_recepie_div {
+  background-color: #ffd591;
+  width: 500px;
+  height: 400px;
+  border-radius: 4px;
+}
+
+.recepies_section div tr td .recipies_insume_name_text {
+  margin-left: 20px;
+}
+
+.recepies_section div tr td p {
+  font-weight: 400;
+  font-size: 25px;
+  margin-top: 0;
+  margin-right: 7px;
+}
+
+.recepies_section div button,
+.recepies_section div button img {
+  width: 50px;
+  height: 50px;
+  margin-right: 40px;
+  transform: translateY(4px);
+}
+
+.recepies_section div p {
+  margin-top: 0;
 }
