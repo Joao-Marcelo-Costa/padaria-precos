@@ -15,9 +15,13 @@ let insumoSelecionadoId = "";
 let receitaAtual = {
   nome: "",
   insumos: [],
-  valor_inicial: 0,
-  valor_final: 0,
 };
+
+function resetarJanelaAdicionarReceitas() {
+  tabelaInsumosReceita.innerHTML = "";
+  inputNomeDaReceita.value = "";
+  receitaAtual = { nome: "", insumos: [] };
+}
 
 btAdicionarReceita.addEventListener("click", () => {
   janelaAdicionarReceita.showModal();
@@ -30,6 +34,7 @@ btAdicionarReceita.addEventListener("click", () => {
 const botaoFechar = document.querySelector(".close_button");
 
 botaoFechar.addEventListener("click", () => {
+  resetarJanelaAdicionarReceitas();
   janelaAdicionarReceita.close();
 });
 
@@ -64,9 +69,6 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
       idInsumo: insumoSelecionadoId,
       nome: insumoSelecionado.nome,
       quantidade: Number(quantidadeInsumoInput.value),
-      valorFracionado: insumoSelecionado.valorFracionado,
-      valorTotal:
-        insumoSelecionado.valorFracionado * Number(quantidadeInsumoInput.value),
     };
   }
 
@@ -95,53 +97,76 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
   preçoTotal.classList.add("preçoTotal_text");
   tdPreçoTotal.appendChild(preçoTotal);
 
+  const tdInsumeDeleteButton = document.createElement("td");
+  const insumeDeleteButton = document.createElement("button");
+  tdInsumeDeleteButton.appendChild(insumeDeleteButton);
+  insumeDeleteButton.classList.add("delete_insume_button");
+
+  const insumeDeleteButtonImg = document.createElement("img");
+  insumeDeleteButton.appendChild(insumeDeleteButtonImg);
+  insumeDeleteButtonImg.src = "../public/delete_icon.png";
+  insumeDeleteButton.addEventListener("click", () => {
+    trInsumo.remove();
+  });
+
   trInsumo.appendChild(tdSelectInsumo);
   trInsumo.appendChild(tdQuantidadeInsumoInput);
   trInsumo.appendChild(tdPreçoPorQuantidade);
   trInsumo.appendChild(tdPreçoTotal);
+  trInsumo.appendChild(tdInsumeDeleteButton);
 
   tabelaInsumosReceita.appendChild(trInsumo);
 
   atualizarInsumo.call(selectNovoInsumo);
   quantidadeInsumoInput.addEventListener("change", () => {
     atualizarInsumo.call(selectNovoInsumo);
+    quantidadeInsumoInput.classList.remove("input_invalido");
   });
   selectNovoInsumo.onchange = atualizarInsumo;
 });
 
 btCancelar.addEventListener("click", () => {
   //tô vendo que vai dar trabalho então termino depois de fazer a parte de salvar receitas
+  resetarJanelaAdicionarReceitas();
   janelaAdicionarReceita.close();
 });
 
-btSalvar.addEventListener("click", () => {
-  let valido = true;
+inputNomeDaReceita.addEventListener("input", () => {
+  inputNomeDaReceita.classList.remove("input_invalido");
+});
+
+btSalvar.addEventListener("click", async () => {
+  let valid_insume = true;
 
   if (!inputNomeDaReceita.value.trim()) {
     inputNomeDaReceita.classList.add("invalid_input");
-    valido = false;
+    valid_insume = false;
   } else {
     inputNomeDaReceita.classList.remove("invalid_input");
   }
+  if (receitaAtual.insumos.length === 0) {
+    valid_insume = false;
+  } else {
+    tabelaInsumosReceita
+      .querySelectorAll(".quantidade_insumo_input")
+      .forEach((input) => {
+        if (!input.value || Number(input.value) <= 0) {
+          input.classList.add("invalid_input");
+          valid_insume = false;
+        } else {
+          input.classList.remove("invalid_input");
+        }
+      });
+  }
 
-  tabelaInsumosReceita
-    .querySelectorAll(".quantidade_insumo_input")
-    .forEach((input) => {
-      if (!input.value || Number(input.value) <= 0) {
-        input.classList.add("invalid_input");
-        valido = false;
-      } else {
-        input.classList.remove("invalid_input");
-      }
-    });
-
-  if (!valido) return;
-
-  receitaAtual.nome = inputNomeDaReceita.value.trim();
-  receitaAtual.valor_total = receitaAtual.insumos.reduce(
-    (acumulador, insumo) => acumulador + (insumo.valorTotal ?? 0),
-    0,
-  );
-  criarReceita(receitaAtual);
-  console.log(receitaAtual);
+  if (!valid_insume) return;
+  try {
+    receitaAtual.nome = inputNomeDaReceita.value.trim();
+    await criarReceita(receitaAtual);
+    resetarJanelaAdicionarReceitas();
+    janelaAdicionarReceita.close();
+  } catch (error) {
+    console.error("Erro ao salvar:", erro);
+    alert("Erro ao salvar a receita, tente novamente.");
+  }
 });

@@ -97,7 +97,12 @@ h4 {
   transform: translateY(3px);
   margin-left: 3px;
 }
-
+.delete_insume_button,
+.delete_insume_button img {
+  width: 50px;
+  height: 50px;
+  transform: translateY(1px) translateX(-7px);
+}
 table tbody tr td label,
 table tbody tr td input,
 table tbody tr td select,
