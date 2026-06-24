@@ -3,6 +3,8 @@
 :root {
   --cor_do_texto_fixo: #001857;
   --cor_do_fundo: #ffebca;
+  --cor_do_fundo_das_receitas: #ffe2b3;
+  --cor_borda_do_input_quando_recusado: #bb0000;
 }
 
 body {

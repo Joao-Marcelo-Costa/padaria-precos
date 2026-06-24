@@ -192,7 +192,9 @@ function adicionarElementoReceita(objetoReceita) {
       <img src="../public/edit_icon.png" alt="imagem botão editar receita">
       </button>
     </div>
-    <table class="recepie_insume_table"></table>
+    <div class="table_container">
+      <table class="recepie_insume_table"></table>
+    </div>
   </div>
   `;
   const tabelaReceita = divReceita.querySelector(".recepie_insume_table");
