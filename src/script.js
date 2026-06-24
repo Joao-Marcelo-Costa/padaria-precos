@@ -1,29 +1,55 @@
 import "./main.css";
 import "./style.css";
-import { listarProdutos } from "../src/api.js";
-import { query } from "firebase/firestore";
+import { listarProdutos, criarReceita, buscarReceitas } from "../src/api.js";
+import { doc, query } from "firebase/firestore";
 
+const inputNomeDaReceita = document.querySelector(".add_recepie_name");
+const inputRendimentoDaReceita = document.querySelector(".add_recipie_amount");
 const btAdicionarReceita = document.querySelector(".button_add_recepies");
 const janelaAdicionarReceita = document.querySelector(".add_recepie_window");
 const tabelaInsumosReceita = document.querySelector(".add_insume_table_tbody");
 const btAdicionarInsumoNaReceita = document.querySelector(".add_insume_button");
 const listaDeInsumos = await listarProdutos();
+const btCancelar = document.querySelector(".cancel_button");
+const btSalvar = document.querySelector(".save_button");
+const listaDeReceitas = await buscarReceitas();
+const sectionReceitas = document.querySelector(".recepies_section");
+
 let insumoSelecionadoId = "";
+let receitaAtual = {
+  nome: "",
+  insumos: [],
+};
+
+function resetarJanelaAdicionarReceitas() {
+  tabelaInsumosReceita.innerHTML = "";
+  inputNomeDaReceita.value = "";
+  receitaAtual = { nome: "", insumos: [] };
+}
 
 btAdicionarReceita.addEventListener("click", () => {
   janelaAdicionarReceita.showModal();
+  receitaAtual = {
+    nome: "",
+    insumos: [],
+  };
 });
 
 const botaoFechar = document.querySelector(".close_button");
 
 botaoFechar.addEventListener("click", () => {
+  resetarJanelaAdicionarReceitas();
   janelaAdicionarReceita.close();
 });
 
 btAdicionarInsumoNaReceita.addEventListener("click", () => {
+  const indexInsumoAtual = receitaAtual.insumos.length;
+  receitaAtual.insumos.push({});
+
   const trInsumo = document.createElement("tr");
   const tdSelectInsumo = document.createElement("td");
   const selectNovoInsumo = document.createElement("select");
+  tdSelectInsumo.classList.add("td_insume_selector");
   tdSelectInsumo.appendChild(selectNovoInsumo);
 
   listaDeInsumos.forEach((insumo) => {
@@ -33,19 +59,37 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
     selectNovoInsumo.appendChild(optionInsumos);
   });
 
-  function pergarPropiedadesElementoInsumo() {
-    let insumoSelecionadoId = this.value;
-    let insumoSelecionado = listaDeInsumos.find(
+  function atualizarInsumo() {
+    const insumoSelecionadoId = this.value;
+    const insumoSelecionado = listaDeInsumos.find(
       (elemento) => elemento.id === insumoSelecionadoId,
     );
+
     preçoPorQuantidade.innerText = `${insumoSelecionado.valorFracionado}R$/${insumoSelecionado.unidade}`;
     quantidadeInsumoInput.placeholder = `quantidade em ${insumoSelecionado.unidade}`;
-
     preçoTotal.innerText = `R$${insumoSelecionado.valorFracionado * quantidadeInsumoInput.value}`;
+    let indexInsumo = 0;
+    receitaAtual.insumos[indexInsumoAtual] = {
+      id: insumoSelecionadoId,
+      nome: insumoSelecionado.nome,
+      quantidade: Number(quantidadeInsumoInput.value),
+    };
   }
 
   const tdQuantidadeInsumoInput = document.createElement("td");
   const quantidadeInsumoInput = document.createElement("input");
+  quantidadeInsumoInput.addEventListener("change", () => {
+    if (quantidadeInsumoInput.value.length > 0) {
+      quantidadeInsumoInput.style.width = `${quantidadeInsumoInput.value.length + 2}ch`;
+      quantidadeInsumoInput.style.textAlign = "center";
+    } else {
+      quantidadeInsumoInput.style.width = "";
+      quantidadeInsumoInput.style.textAlign = "left";
+    }
+    quantidadeInsumoInput.classList.remove("input_invalido");
+  });
+
+  quantidadeInsumoInput.classList.add("quantidade_insumo_input");
   tdQuantidadeInsumoInput.appendChild(quantidadeInsumoInput);
 
   const tdPreçoPorQuantidade = document.createElement("td");
@@ -57,16 +101,134 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
   preçoTotal.classList.add("preçoTotal_text");
   tdPreçoTotal.appendChild(preçoTotal);
 
+  const tdInsumeDeleteButton = document.createElement("td");
+  const insumeDeleteButton = document.createElement("button");
+  tdInsumeDeleteButton.appendChild(insumeDeleteButton);
+  insumeDeleteButton.classList.add("delete_insume_button");
+
+  const insumeDeleteButtonImg = document.createElement("img");
+  insumeDeleteButton.appendChild(insumeDeleteButtonImg);
+  insumeDeleteButtonImg.src = "../public/delete_icon.png";
+  insumeDeleteButtonImg.alt = "botão de deletar receita";
+  insumeDeleteButton.addEventListener("click", () => {
+    receitaAtual.insumos.splice(indexInsumoAtual, 1);
+    trInsumo.remove();
+  });
+
   trInsumo.appendChild(tdSelectInsumo);
   trInsumo.appendChild(tdQuantidadeInsumoInput);
   trInsumo.appendChild(tdPreçoPorQuantidade);
   trInsumo.appendChild(tdPreçoTotal);
+  trInsumo.appendChild(tdInsumeDeleteButton);
 
   tabelaInsumosReceita.appendChild(trInsumo);
 
-  pergarPropiedadesElementoInsumo.call(selectNovoInsumo);
+  atualizarInsumo.call(selectNovoInsumo);
   quantidadeInsumoInput.addEventListener("change", () => {
-    pergarPropiedadesElementoInsumo.call(selectNovoInsumo);
+    atualizarInsumo.call(selectNovoInsumo);
+    quantidadeInsumoInput.classList.remove("invalid_input");
   });
-  selectNovoInsumo.onchange = pergarPropiedadesElementoInsumo;
+  selectNovoInsumo.onchange = atualizarInsumo;
+});
+
+btCancelar.addEventListener("click", () => {
+  //tô vendo que vai dar trabalho então termino depois de fazer a parte de salvar receitas
+  resetarJanelaAdicionarReceitas();
+  janelaAdicionarReceita.close();
+});
+
+inputNomeDaReceita.addEventListener("input", () => {
+  inputNomeDaReceita.classList.remove("invalid_input");
+});
+
+btSalvar.addEventListener("click", async () => {
+  let valid_insume = true;
+
+  if (!inputNomeDaReceita.value.trim()) {
+    inputNomeDaReceita.classList.add("invalid_input");
+    valid_insume = false;
+  } else {
+    inputNomeDaReceita.classList.remove("invalid_input");
+  }
+  if (receitaAtual.insumos.length === 0) {
+    valid_insume = false;
+  } else {
+    tabelaInsumosReceita
+      .querySelectorAll(".quantidade_insumo_input")
+      .forEach((input) => {
+        if (!input.value || Number(input.value) <= 0) {
+          input.classList.add("invalid_input");
+          valid_insume = false;
+        } else {
+          input.classList.remove("invalid_input");
+        }
+      });
+  }
+
+  if (!valid_insume) return;
+  try {
+    receitaAtual.nome = inputNomeDaReceita.value.trim();
+    receitaAtual.rendimento = inputRendimentoDaReceita.value.trim();
+    await criarReceita(receitaAtual);
+    resetarJanelaAdicionarReceitas();
+    janelaAdicionarReceita.close();
+  } catch (error) {
+    console.error("Erro ao salvar:", error);
+    alert("Erro ao salvar a receita, tente novamente.");
+  }
+});
+
+function adicionarElementoReceita(objetoReceita) {
+  const divReceita = document.createElement("div");
+  divReceita.classList.add("main_recepie_div");
+
+  divReceita.innerHTML = `
+  <div class="header_recepie_div">
+    <h5>${objetoReceita.nome}</h5>
+    <button class="edit_recepie_buttton">
+    <img src="../public/edit_icon.png" alt="imagem botão editar receita">
+    </button>
+  </div>
+  <table class="recepie_insume_table"></table>
+  `;
+  const tabelaReceita = divReceita.querySelector(".recepie_insume_table");
+
+  sectionReceitas.appendChild(divReceita);
+
+  let custoTotalDaReceita = 0;
+  objetoReceita.insumos.forEach((insumoDaReceita) => {
+    let insumoReal = listaDeInsumos.find(
+      (insumo) => insumo.id === insumoDaReceita.id,
+    );
+    console.log(insumoReal);
+    let custoDesseInsumo =
+      insumoReal.valorFracionado * insumoDaReceita.quantidade;
+    custoTotalDaReceita = custoTotalDaReceita + custoDesseInsumo;
+
+    const tdInsumoAtualNome = document.createElement("td");
+    tdInsumoAtualNome.innerHTML = `<p class="recipies_insume_name_text">${insumoReal.nome}</p>`;
+
+    const tdInsumoAtualQuantidade = document.createElement("td");
+    tdInsumoAtualQuantidade.innerHTML = `<p>${insumoDaReceita.quantidade}${insumoReal.unidade}</p>`;
+
+    const tdInsumoAtualPreço = document.createElement("td");
+    tdInsumoAtualPreço.innerHTML = `<p>R$${Number(insumoReal.valorFracionado * insumoDaReceita.quantidade).toFixed(2)}</p>`;
+
+    const trInsumoAtual = document.createElement("tr");
+    trInsumoAtual.appendChild(tdInsumoAtualNome);
+    trInsumoAtual.appendChild(tdInsumoAtualQuantidade);
+    trInsumoAtual.appendChild(tdInsumoAtualPreço);
+
+    tabelaReceita.appendChild(trInsumoAtual);
+  });
+
+  divReceita.innerHTML += `
+  <div>
+  <p>R$${custoTotalDaReceita.toFixed(2)}</p>
+  <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}</p></div>
+`;
+}
+
+listaDeReceitas.forEach((receita) => {
+  adicionarElementoReceita(receita);
 });

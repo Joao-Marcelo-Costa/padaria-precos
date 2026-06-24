@@ -10,47 +10,36 @@
 }
 h3,
 h4,
+h5,
 label,
-input,
 select,
-p {
+p,
+button {
   font-family: "Oswald";
   font-optical-sizing: auto;
   font-style: normal;
   color: var(--cor_do_texto_fixo);
   text-align: left;
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 0;
+  text-align: center;
+  text-align-last: center;
 }
 
 h3,
 h4,
 label,
-input,
 select,
 p {
-  font-weight: 900;
-  font-size: 40px;
-  margin-bottom: 0;
+  text-align: center;
+  text-align-last: center;
 }
 
 h4 {
   margin-bottom: 20px;
 }
 
-table tbody tr td label,
-table tbody tr td input,
-table tbody tr td select,
-table tbody tr td p,
-input {
-  font-weight: 300;
-  font-size: 40px;
-  margin: 0 0 0 0;
-  text-align: left;
-}
-table {
-  width: 90%;
-  table-layout: fixed;
-}
-.button_add_recepies,
 .button_add_recepies,
 .button_add_recepies img,
 .close_button,
@@ -62,6 +51,7 @@ table {
   width: 40px;
   height: 40px;
 }
+
 .button_add_recepies {
   height: 50px;
   transform: translateY(6px);
@@ -100,6 +90,7 @@ table {
   font-size: 50px;
   margin-top: 20px;
 }
+
 .add_insume_button,
 .add_insume_button img {
   width: 40px;
@@ -107,13 +98,115 @@ table {
   transform: translateY(3px);
   margin-left: 3px;
 }
-
-.add_recepie_window label {
+.delete_insume_button,
+.delete_insume_button img {
+  width: 50px;
+  height: 50px;
+  transform: translateY(1px) translateX(-7px);
+}
+table tbody tr td label,
+table tbody tr td input,
+table tbody tr td select,
+table tbody tr td p,
+input {
+  font-family: "Oswald";
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 40px;
+  margin: 0 0 0 0;
   text-align: left;
 }
 
-input,
-select,
-p {
-  text-align: center;
+table {
+  table-layout: auto;
+}
+.add_recepie_window label {
+  text-align: left;
+}
+.add_insume_table_tbody tr td {
+  padding-bottom: 5px;
+  padding-right: 40px;
+}
+
+.add_insume_table_tbody tr .td_insume_selector {
+  padding-right: 30px;
+}
+
+.td_insume_selector select {
+  width: auto;
+}
+
+.quantidade_insumo_input {
+  width: 255px;
+}
+.invalid_input {
+  border: 2px solid rgb(187, 0, 0);
+  border-radius: 5px;
+}
+.add_recepie_name,
+.add_recipie_amount {
+  margin-left: 20px;
+}
+
+dialog .add_receipe_window_conteiner {
+  display: flex;
+  flex-direction: column;
+  min-width: 500px;
+}
+.add_receipe_window_content {
+  flex: 1;
+}
+.recepies_buttons_container {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.recepies_section {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.header_recepie_div {
+  margin-top: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.recepies_section div h5 {
+  margin: 0 0 0 20px;
+}
+.main_recepie_div {
+  background-color: #ffd591;
+  width: 500px;
+  height: 400px;
+  border-radius: 4px;
+}
+
+.recepies_section div tr td .recipies_insume_name_text {
+  margin-left: 20px;
+}
+
+.recepies_section div tr td p {
+  font-weight: 400;
+  font-size: 25px;
+  margin-top: 0;
+  margin-right: 7px;
+}
+
+.recepies_section div button,
+.recepies_section div button img {
+  width: 50px;
+  height: 50px;
+  margin-right: 40px;
+  transform: translateY(4px);
+}
+
+.recepies_section div p {
+  margin-top: 0;
 }

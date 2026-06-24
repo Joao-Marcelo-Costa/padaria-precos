@@ -82,6 +82,7 @@ function adicionarInsumoNaTela(objetoInsumo) {
         unidade: campos[1].value,
         valorTotal: Number(campos[2].value),
         quantidadePorEmbalagem: Number(campos[3].value),
+        valorFracionado: Number(campos[2].value) / Number(campos[3].value),
       };
 
       const id = tr.dataset.id;
@@ -92,6 +93,7 @@ function adicionarInsumoNaTela(objetoInsumo) {
       tdUnidade.innerHTML = `${campos[1].value}`;
       tdValorTotal.innerHTML = `${campos[2].value}`;
       tdquantidadePorEmbalagem.innerHTML = `${campos[3].value}`;
+      tdValorFracionado.innerHTML = `R$${Number(campos[2].value) / Number(campos[3].value)}/Kg`;
       tr.classList.remove("formularioTr");
       botaoEditar.onclick = editarInsumo;
     }
