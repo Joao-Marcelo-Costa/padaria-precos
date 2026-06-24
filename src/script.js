@@ -4,6 +4,7 @@ import { listarProdutos, criarReceita, buscarReceitas } from "../src/api.js";
 import { doc, query } from "firebase/firestore";
 
 const inputNomeDaReceita = document.querySelector(".add_recepie_name");
+const inputUnidadeDaReceita = document.querySelector(".add_recepie_unity");
 const inputRendimentoDaReceita = document.querySelector(".add_recipie_amount");
 const btAdicionarReceita = document.querySelector(".button_add_recepies");
 const janelaAdicionarReceita = document.querySelector(".add_recepie_window");
@@ -168,6 +169,7 @@ btSalvar.addEventListener("click", async () => {
   if (!valid_insume) return;
   try {
     receitaAtual.nome = inputNomeDaReceita.value.trim();
+    receitaAtual.unidade = inputUnidadeDaReceita.value;
     receitaAtual.rendimento = inputRendimentoDaReceita.value.trim();
     await criarReceita(receitaAtual);
     resetarJanelaAdicionarReceitas();
@@ -183,13 +185,15 @@ function adicionarElementoReceita(objetoReceita) {
   divReceita.classList.add("main_recepie_div");
 
   divReceita.innerHTML = `
-  <div class="header_recepie_div">
-    <h5>${objetoReceita.nome}</h5>
-    <button class="edit_recepie_buttton">
-    <img src="../public/edit_icon.png" alt="imagem botão editar receita">
-    </button>
+  <div>
+    <div class="header_recepie_div">
+      <h5>${objetoReceita.nome}</h5>
+      <button class="edit_recepie_buttton">
+      <img src="../public/edit_icon.png" alt="imagem botão editar receita">
+      </button>
+    </div>
+    <table class="recepie_insume_table"></table>
   </div>
-  <table class="recepie_insume_table"></table>
   `;
   const tabelaReceita = divReceita.querySelector(".recepie_insume_table");
 
@@ -223,9 +227,10 @@ function adicionarElementoReceita(objetoReceita) {
   });
 
   divReceita.innerHTML += `
-  <div>
-  <p>R$${custoTotalDaReceita.toFixed(2)}</p>
-  <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}</p></div>
+  <div class="prices_div">
+    <p>R$${custoTotalDaReceita.toFixed(2)}</p>
+   <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}/${objetoReceita.unidade}</p>
+  </div>
 `;
 }
 

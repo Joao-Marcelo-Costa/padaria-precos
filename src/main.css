@@ -108,7 +108,8 @@ table tbody tr td label,
 table tbody tr td input,
 table tbody tr td select,
 table tbody tr td p,
-input {
+input,
+select {
   font-family: "Oswald";
   font-optical-sizing: auto;
   font-style: normal;
@@ -206,7 +207,14 @@ dialog .add_receipe_window_conteiner {
   margin-right: 40px;
   transform: translateY(4px);
 }
-
+.main_recepie_div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.prices_div {
+  margin-bottom: 20px;
+}
 .recepies_section div p {
   margin-top: 0;
 }
