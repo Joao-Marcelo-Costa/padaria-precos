@@ -183,7 +183,6 @@ btSalvar.addEventListener("click", async () => {
 
 let qunaitidadeLinha = 0;
 function adicionarElementoReceita(objetoReceita) {
-  debugger;
   if (qunaitidadeLinha % 3 === 0) {
     const novoTrReceitas = document.createElement("tr");
     novoTrReceitas.classList.add("holding_recepies_tr");
@@ -213,7 +212,6 @@ function adicionarElementoReceita(objetoReceita) {
     let insumoReal = listaDeInsumos.find(
       (insumo) => insumo.id === insumoDaReceita.id,
     );
-    console.log(insumoReal);
     let custoDesseInsumo =
       insumoReal.valorFracionado * insumoDaReceita.quantidade;
     custoTotalDaReceita = custoTotalDaReceita + custoDesseInsumo;
@@ -235,12 +233,13 @@ function adicionarElementoReceita(objetoReceita) {
     tabelaReceita.appendChild(trInsumoAtual);
   });
 
-  divReceita.innerHTML += `
-  <div class="prices_div">
-    <p>R$${custoTotalDaReceita.toFixed(2)}</p>
-   <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}/${objetoReceita.unidade}</p>
-  </div>
+  const pricesDiv = document.createElement("div");
+  pricesDiv.classList.add("prices_div");
+  pricesDiv.innerHTML = `
+  <p>R$${custoTotalDaReceita.toFixed(2)}</p>
+  <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}/${objetoReceita.unidade}</p>
   `;
+  divReceita.appendChild(pricesDiv);
   const todosTrs = tabelaSectionReceitas.querySelectorAll(
     ".holding_recepies_tr",
   );

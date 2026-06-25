@@ -218,13 +218,30 @@ dialog .add_receipe_window_conteiner {
 }
 .table_container {
   overflow-y: auto;
-  max-height: 120px;
+  max-height: 125px;
 }
 .recepie_insume_table tbody tr td p {
   text-align: left;
   text-align-last: left;
 }
 
+.table_container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table_container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table_container::-webkit-scrollbar-thumb {
+  background: var(--cor_do_texto_fixo);
+  border-radius: 10px;
+  opacity: 0.3;
+}
+
+.table_container::-webkit-scrollbar-thumb:hover {
+  opacity: 1;
+}
 .prices_div {
   margin-bottom: 20px;
 }
