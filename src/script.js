@@ -15,6 +15,7 @@ const btCancelar = document.querySelector(".cancel_button");
 const btSalvar = document.querySelector(".save_button");
 const listaDeReceitas = await buscarReceitas();
 const sectionReceitas = document.querySelector(".recepies_section");
+const tabelaSectionReceitas = document.querySelector(".recepies_section_table");
 
 let insumoSelecionadoId = "";
 let receitaAtual = {
@@ -180,12 +181,19 @@ btSalvar.addEventListener("click", async () => {
   }
 });
 
+let qunaitidadeLinha = 0;
 function adicionarElementoReceita(objetoReceita) {
+  debugger;
+  if (qunaitidadeLinha % 3 === 0) {
+    const novoTrReceitas = document.createElement("tr");
+    novoTrReceitas.classList.add("holding_recepies_tr");
+    tabelaSectionReceitas.appendChild(novoTrReceitas);
+  }
+  qunaitidadeLinha += 1;
+
   const divReceita = document.createElement("div");
   divReceita.classList.add("main_recepie_div");
-
   divReceita.innerHTML = `
-  <div>
     <div class="header_recepie_div">
       <h5>${objetoReceita.nome}</h5>
       <button class="edit_recepie_buttton">
@@ -195,11 +203,10 @@ function adicionarElementoReceita(objetoReceita) {
     <div class="table_container">
       <table class="recepie_insume_table"></table>
     </div>
-  </div>
   `;
+  const novoTdReceitas = document.createElement("td");
+  novoTdReceitas.appendChild(divReceita);
   const tabelaReceita = divReceita.querySelector(".recepie_insume_table");
-
-  sectionReceitas.appendChild(divReceita);
 
   let custoTotalDaReceita = 0;
   objetoReceita.insumos.forEach((insumoDaReceita) => {
@@ -233,7 +240,12 @@ function adicionarElementoReceita(objetoReceita) {
     <p>R$${custoTotalDaReceita.toFixed(2)}</p>
    <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}/${objetoReceita.unidade}</p>
   </div>
-`;
+  `;
+  const todosTrs = tabelaSectionReceitas.querySelectorAll(
+    ".holding_recepies_tr",
+  );
+  const ultimoTr = todosTrs[todosTrs.length - 1];
+  ultimoTr.appendChild(novoTdReceitas);
 }
 
 listaDeReceitas.forEach((receita) => {

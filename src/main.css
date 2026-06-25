@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
 
+:root {
+  --espaço_entre_receitas: 10px;
+}
 .recepies {
   margin: 0 40px 0 40px;
 }
@@ -165,11 +168,14 @@ dialog .add_receipe_window_conteiner {
   gap: 10px;
 }
 
-.recepies_section {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 16px;
+.recepies_section_table {
+  width: 100%;
+  border-spacing: var(--espaço_entre_receitas) 5px;
+  margin-left: calc(-1 * var(--espaço_entre_receitas));
+  width: calc(100% + 2 * var(--espaço_entre_receitas));
+}
+.recepies_section_table tr td {
+  width: 33%;
 }
 
 .header_recepie_div {
@@ -179,12 +185,11 @@ dialog .add_receipe_window_conteiner {
   justify-content: space-between;
 }
 
-.recepies_section div h5 {
+.recepies div h5 {
   margin: 0 0 0 20px;
 }
 .main_recepie_div {
   background-color: var(--cor_do_fundo_das_receitas);
-  width: 32%;
   min-width: 250px;
   height: 350px;
   border-radius: 8px;
@@ -193,19 +198,19 @@ dialog .add_receipe_window_conteiner {
   justify-content: space-between;
 }
 
-.recepies_section div tr td .recipies_insume_name_text {
+.recepies div tr td .recipies_insume_name_text {
   margin-left: 20px;
 }
 
-.recepies_section div tr td p {
+.recepies div tr td p {
   font-weight: 400;
   font-size: 25px;
   margin-top: 0;
   margin-right: 7px;
 }
 
-.recepies_section div button,
-.recepies_section div button img {
+.recepies div button,
+.recepies div button img {
   width: 50px;
   height: 50px;
   margin-right: 40px;
@@ -223,6 +228,6 @@ dialog .add_receipe_window_conteiner {
 .prices_div {
   margin-bottom: 20px;
 }
-.recepies_section div p {
+.recepies div p {
   margin-top: 0;
 }
