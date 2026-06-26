@@ -35,6 +35,7 @@ btAdicionarReceita.addEventListener("click", () => {
     nome: "",
     insumos: [],
   };
+  inputNomeDaReceita.focus();
 });
 
 const botaoFechar = document.querySelector(".close_button");
@@ -131,10 +132,59 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
     quantidadeInsumoInput.classList.remove("invalid_input");
   });
   selectNovoInsumo.onchange = atualizarInsumo;
+
+  inputs.push(selectNovoInsumo);
+  inputs.push(quantidadeInsumoInput);
+  inputs.push(btAdicionarInsumoNaReceita);
+
+  selectNovoInsumo.addEventListener("keydown", (e) =>
+    navegarPorEnter(e, selectNovoInsumo),
+  );
+  quantidadeInsumoInput.addEventListener("keydown", (e) =>
+    navegarPorEnter(e, quantidadeInsumoInput),
+  );
+});
+
+const inputs = [
+  inputNomeDaReceita,
+  inputUnidadeDaReceita,
+  inputRendimentoDaReceita,
+  btAdicionarInsumoNaReceita,
+];
+
+function navegarPorEnter(e, elemento) {
+  if (e.key !== "Enter") return;
+  e.preventDefault();
+
+  const indice = inputs.indexOf(elemento);
+  const proximoCampo = inputs[indice + 1];
+  if (!proximoCampo) return;
+
+  if (proximoCampo.tagName === "BUTTON") {
+    proximoCampo.click();
+    inputs[indice + 2].focus();
+  } else {
+    proximoCampo.focus();
+  }
+}
+
+inputNomeDaReceita.addEventListener("keydown", (e) =>
+  navegarPorEnter(e, inputNomeDaReceita),
+);
+inputUnidadeDaReceita.addEventListener("keydown", (e) =>
+  navegarPorEnter(e, inputUnidadeDaReceita),
+);
+inputRendimentoDaReceita.addEventListener("keydown", (e) =>
+  navegarPorEnter(e, inputRendimentoDaReceita),
+);
+
+janelaAdicionarReceita.addEventListener("cancel", (e) => {
+  e.preventDefault(); // impede o fechamento padrão do dialog
+  btCancelar.click();
+  tdSelectInsumo.focus();
 });
 
 btCancelar.addEventListener("click", () => {
-  //tô vendo que vai dar trabalho então termino depois de fazer a parte de salvar receitas
   resetarJanelaAdicionarReceitas();
   janelaAdicionarReceita.close();
 });
