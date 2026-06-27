@@ -223,6 +223,7 @@ btSalvar.addEventListener("click", async () => {
     receitaAtual.unidade = inputUnidadeDaReceita.value;
     receitaAtual.rendimento = inputRendimentoDaReceita.value.trim();
     await criarReceita(receitaAtual);
+    adicionarElementoReceita(receitaAtual);
     resetarJanelaAdicionarReceitas();
     janelaAdicionarReceita.close();
   } catch (error) {
