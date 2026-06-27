@@ -186,12 +186,32 @@ dialog .add_receipe_window_conteiner {
 }
 
 .recepies div h5 {
-  margin: 0 0 0 20px;
+  margin: 0 0 0px 20px;
+  max-width: 470px;
+  white-space: nowrap;
+  overflow-x: auto;
 }
+
+.recepies div h5::-webkit-scrollbar {
+  height: 2px;
+}
+.recepies div h5::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.recepies div h5::-webkit-scrollbar-thumb {
+  background: var(--cor_do_texto_fixo);
+  border-radius: 10px;
+}
+
+.recepies div h5::-webkit-scrollbar-thumb:hover {
+  background: gray;
+}
+
 .main_recepie_div {
   background-color: var(--cor_do_fundo_das_receitas);
   min-width: 250px;
-  height: 350px;
+  height: 400px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
