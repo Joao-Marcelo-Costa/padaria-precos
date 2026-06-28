@@ -240,10 +240,6 @@ dialog .add_receipe_window_conteiner {
   overflow-y: auto;
   max-height: 125px;
 }
-.recepie_insume_table tbody tr td p {
-  text-align: left;
-  text-align-last: left;
-}
 
 .table_container::-webkit-scrollbar {
   width: 6px;
@@ -261,6 +257,15 @@ dialog .add_receipe_window_conteiner {
 
 .table_container::-webkit-scrollbar-thumb:hover {
   opacity: 1;
+}
+.recepie_insume_table {
+  table-layout: fixed;
+  width: 100%;
+}
+.recipies_insume_name_text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .prices_div {
   margin-bottom: 20px;
