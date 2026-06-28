@@ -29,11 +29,11 @@ function adicionarInsumoNaTela(objetoInsumo) {
   tr.append(tdUnidade);
 
   const tdValorTotal = document.createElement("td");
-  tdValorTotal.innerHTML = `${objetoInsumo.valorTotal}`;
+  tdValorTotal.innerHTML = `R$${objetoInsumo.valorTotal.toFixed(2)}`;
   tr.append(tdValorTotal);
 
   const tdquantidadePorEmbalagem = document.createElement("td");
-  tdquantidadePorEmbalagem.innerHTML = `${objetoInsumo.quantidadePorEmbalagem}`;
+  tdquantidadePorEmbalagem.innerHTML = `${objetoInsumo.quantidadePorEmbalagem}${objetoInsumo.unidade}`;
   tr.append(tdquantidadePorEmbalagem);
 
   const tdValorFracionado = document.createElement("td");

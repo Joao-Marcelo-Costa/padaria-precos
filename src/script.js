@@ -15,6 +15,7 @@ const btCancelar = document.querySelector(".cancel_button");
 const btSalvar = document.querySelector(".save_button");
 const listaDeReceitas = await buscarReceitas();
 const sectionReceitas = document.querySelector(".recepies_section");
+const tabelaSectionReceitas = document.querySelector(".recepies_section_table");
 
 let insumoSelecionadoId = "";
 let receitaAtual = {
@@ -34,6 +35,7 @@ btAdicionarReceita.addEventListener("click", () => {
     nome: "",
     insumos: [],
   };
+  inputNomeDaReceita.focus();
 });
 
 const botaoFechar = document.querySelector(".close_button");
@@ -130,10 +132,59 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
     quantidadeInsumoInput.classList.remove("invalid_input");
   });
   selectNovoInsumo.onchange = atualizarInsumo;
+
+  inputs.push(selectNovoInsumo);
+  inputs.push(quantidadeInsumoInput);
+  inputs.push(btAdicionarInsumoNaReceita);
+
+  selectNovoInsumo.addEventListener("keydown", (e) =>
+    navegarPorEnter(e, selectNovoInsumo),
+  );
+  quantidadeInsumoInput.addEventListener("keydown", (e) =>
+    navegarPorEnter(e, quantidadeInsumoInput),
+  );
+});
+
+const inputs = [
+  inputNomeDaReceita,
+  inputUnidadeDaReceita,
+  inputRendimentoDaReceita,
+  btAdicionarInsumoNaReceita,
+];
+
+function navegarPorEnter(e, elemento) {
+  if (e.key !== "Enter") return;
+  e.preventDefault();
+
+  const indice = inputs.indexOf(elemento);
+  const proximoCampo = inputs[indice + 1];
+  if (!proximoCampo) return;
+
+  if (proximoCampo.tagName === "BUTTON") {
+    proximoCampo.click();
+    inputs[indice + 2].focus();
+  } else {
+    proximoCampo.focus();
+  }
+}
+
+inputNomeDaReceita.addEventListener("keydown", (e) =>
+  navegarPorEnter(e, inputNomeDaReceita),
+);
+inputUnidadeDaReceita.addEventListener("keydown", (e) =>
+  navegarPorEnter(e, inputUnidadeDaReceita),
+);
+inputRendimentoDaReceita.addEventListener("keydown", (e) =>
+  navegarPorEnter(e, inputRendimentoDaReceita),
+);
+
+janelaAdicionarReceita.addEventListener("cancel", (e) => {
+  e.preventDefault(); // impede o fechamento padrão do dialog
+  btCancelar.click();
+  tdSelectInsumo.focus();
 });
 
 btCancelar.addEventListener("click", () => {
-  //tô vendo que vai dar trabalho então termino depois de fazer a parte de salvar receitas
   resetarJanelaAdicionarReceitas();
   janelaAdicionarReceita.close();
 });
@@ -172,6 +223,7 @@ btSalvar.addEventListener("click", async () => {
     receitaAtual.unidade = inputUnidadeDaReceita.value;
     receitaAtual.rendimento = inputRendimentoDaReceita.value.trim();
     await criarReceita(receitaAtual);
+    adicionarElementoReceita(receitaAtual);
     resetarJanelaAdicionarReceitas();
     janelaAdicionarReceita.close();
   } catch (error) {
@@ -180,12 +232,18 @@ btSalvar.addEventListener("click", async () => {
   }
 });
 
+let qunaitidadeLinha = 0;
 function adicionarElementoReceita(objetoReceita) {
+  if (qunaitidadeLinha % 3 === 0) {
+    const novoTrReceitas = document.createElement("tr");
+    novoTrReceitas.classList.add("holding_recepies_tr");
+    tabelaSectionReceitas.appendChild(novoTrReceitas);
+  }
+  qunaitidadeLinha += 1;
+
   const divReceita = document.createElement("div");
   divReceita.classList.add("main_recepie_div");
-
   divReceita.innerHTML = `
-  <div>
     <div class="header_recepie_div">
       <h5>${objetoReceita.nome}</h5>
       <button class="edit_recepie_buttton">
@@ -195,18 +253,16 @@ function adicionarElementoReceita(objetoReceita) {
     <div class="table_container">
       <table class="recepie_insume_table"></table>
     </div>
-  </div>
   `;
+  const novoTdReceitas = document.createElement("td");
+  novoTdReceitas.appendChild(divReceita);
   const tabelaReceita = divReceita.querySelector(".recepie_insume_table");
-
-  sectionReceitas.appendChild(divReceita);
 
   let custoTotalDaReceita = 0;
   objetoReceita.insumos.forEach((insumoDaReceita) => {
     let insumoReal = listaDeInsumos.find(
       (insumo) => insumo.id === insumoDaReceita.id,
     );
-    console.log(insumoReal);
     let custoDesseInsumo =
       insumoReal.valorFracionado * insumoDaReceita.quantidade;
     custoTotalDaReceita = custoTotalDaReceita + custoDesseInsumo;
@@ -228,12 +284,18 @@ function adicionarElementoReceita(objetoReceita) {
     tabelaReceita.appendChild(trInsumoAtual);
   });
 
-  divReceita.innerHTML += `
-  <div class="prices_div">
-    <p>R$${custoTotalDaReceita.toFixed(2)}</p>
-   <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}/${objetoReceita.unidade}</p>
-  </div>
-`;
+  const pricesDiv = document.createElement("div");
+  pricesDiv.classList.add("prices_div");
+  pricesDiv.innerHTML = `
+  <p>R$${custoTotalDaReceita.toFixed(2)}</p>
+  <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}/${objetoReceita.unidade}</p>
+  `;
+  divReceita.appendChild(pricesDiv);
+  const todosTrs = tabelaSectionReceitas.querySelectorAll(
+    ".holding_recepies_tr",
+  );
+  const ultimoTr = todosTrs[todosTrs.length - 1];
+  ultimoTr.appendChild(novoTdReceitas);
 }
 
 listaDeReceitas.forEach((receita) => {
