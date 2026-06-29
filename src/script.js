@@ -10,7 +10,7 @@ const btAdicionarReceita = document.querySelector(".button_add_recepies");
 const janelaAdicionarReceita = document.querySelector(".add_recepie_window");
 const tabelaInsumosReceita = document.querySelector(".add_insume_table_tbody");
 const btAdicionarInsumoNaReceita = document.querySelector(".add_insume_button");
-const listaDeInsumos = await listarProdutos();
+let listaDeInsumos = await listarProdutos();
 const btCancelar = document.querySelector(".cancel_button");
 const btSalvar = document.querySelector(".save_button");
 const listaDeReceitas = await buscarReceitas();
@@ -29,6 +29,20 @@ function resetarJanelaAdicionarReceitas() {
   receitaAtual = { nome: "", insumos: [] };
 }
 
+async function atualizarSelectInsumos(select) {
+  const listaDeInsumosNova = await listarProdutos();
+
+  select.innerHTML = "";
+
+  listaDeInsumosNova.forEach((insumo) => {
+    const optionInsumos = document.createElement("option");
+    optionInsumos.value = insumo.id;
+    optionInsumos.textContent = insumo.nome;
+
+    select.appendChild(optionInsumos);
+  });
+}
+
 btAdicionarReceita.addEventListener("click", () => {
   janelaAdicionarReceita.showModal();
   receitaAtual = {
@@ -45,26 +59,23 @@ botaoFechar.addEventListener("click", () => {
   janelaAdicionarReceita.close();
 });
 
-btAdicionarInsumoNaReceita.addEventListener("click", () => {
+btAdicionarInsumoNaReceita.addEventListener("click", async () => {
   const indexInsumoAtual = receitaAtual.insumos.length;
   receitaAtual.insumos.push({});
 
   const trInsumo = document.createElement("tr");
   const tdSelectInsumo = document.createElement("td");
   const selectNovoInsumo = document.createElement("select");
+  selectNovoInsumo.classList.add("insume_selector");
   tdSelectInsumo.classList.add("td_insume_selector");
   tdSelectInsumo.appendChild(selectNovoInsumo);
 
-  listaDeInsumos.forEach((insumo) => {
-    const optionInsumos = document.createElement("option");
-    optionInsumos.value = insumo.id;
-    optionInsumos.textContent = insumo.nome;
-    selectNovoInsumo.appendChild(optionInsumos);
-  });
+  await atualizarSelectInsumos(selectNovoInsumo);
 
-  function atualizarInsumo() {
+  async function atualizarInsumo() {
+    const listaDeInsumosNova = await listarProdutos();
     const insumoSelecionadoId = this.value;
-    const insumoSelecionado = listaDeInsumos.find(
+    const insumoSelecionado = listaDeInsumosNova.find(
       (elemento) => elemento.id === insumoSelecionadoId,
     );
 
@@ -127,6 +138,7 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
   tabelaInsumosReceita.appendChild(trInsumo);
 
   atualizarInsumo.call(selectNovoInsumo);
+
   quantidadeInsumoInput.addEventListener("change", () => {
     atualizarInsumo.call(selectNovoInsumo);
     quantidadeInsumoInput.classList.remove("invalid_input");
@@ -143,6 +155,12 @@ btAdicionarInsumoNaReceita.addEventListener("click", () => {
   quantidadeInsumoInput.addEventListener("keydown", (e) =>
     navegarPorEnter(e, quantidadeInsumoInput),
   );
+});
+
+window.addEventListener("focus", async () => {
+  document.querySelectorAll(".insume_selector").forEach((select) => {
+    atualizarSelectInsumos(select);
+  });
 });
 
 const inputs = [
@@ -242,6 +260,7 @@ function adicionarElementoReceita(objetoReceita) {
   qunaitidadeLinha += 1;
 
   const divReceita = document.createElement("div");
+  divReceita.dataset.receitaId = objetoReceita.id;
   divReceita.classList.add("main_recepie_div");
   divReceita.innerHTML = `
     <div class="header_recepie_div">
