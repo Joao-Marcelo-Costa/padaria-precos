@@ -246,8 +246,9 @@ function abrirFormulário() {
           ),
         ),
       };
-      await criarProduto(produtoParaCriar);
-      adicionarInsumoNaTela(produtoParaCriar);
+      const produtoCriado = await criarProduto(produtoParaCriar);
+
+      adicionarInsumoNaTela(produtoCriado);
     });
   tbody.appendChild(formularioTr);
   inputNome.focus();
