@@ -48,9 +48,11 @@ function adicionarInsumoNaTela(objetoInsumo) {
 
   function editarInsumo() {
     tr.classList.add("formularioTr");
-    tdNome.innerHTML = `<input value = ${tdNome.textContent} type="text" id="nome" required />`;
-    const antigaUnidade = tdUnidade.textContent;
+    debugger;
+    const antigoNome = tdNome.textContent;
+    tdNome.innerHTML = `<input value = "${antigoNome}" type="text" id="nome" required />`;
 
+    const antigaUnidade = tdUnidade.textContent;
     tdUnidade.innerHTML = `
      <select id="unidade" required>
         <option value="UN">UN</option>
