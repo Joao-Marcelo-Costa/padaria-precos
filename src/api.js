@@ -18,7 +18,12 @@ export async function listarProdutos() {
 }
 
 export async function criarProduto(produto) {
-  await addDoc(collection(db, "produtos"), produto);
+  const docRef = await addDoc(collection(db, "produtos"), produto);
+
+  return {
+    ...produto,
+    id: docRef.id,
+  };
 }
 
 export async function excluirProduto(id) {

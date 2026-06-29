@@ -48,21 +48,26 @@ function adicionarInsumoNaTela(objetoInsumo) {
 
   function editarInsumo() {
     tr.classList.add("formularioTr");
-    tdNome.innerHTML = `<input value = ${tdNome.textContent} type="text" id="nome" required />`;
+    debugger;
+    const antigoNome = tdNome.textContent;
+    tdNome.innerHTML = `<input value = "${antigoNome}" type="text" id="nome" required />`;
 
+    const antigaUnidade = tdUnidade.textContent;
     tdUnidade.innerHTML = `
-     <select value="${tdUnidade.textContent}" id="unidade" required>
-        <option>UN</option>
-        <option>Kg</option>
-        <option>g</option>
-        <option>100g</option>
-        <option>L</option>
-        <option>mL</option>
+     <select id="unidade" required>
+        <option value="UN">UN</option>
+        <option value="Kg">Kg</option>
+        <option value="g">g</option>
+        <option value="100g">100g</option>
+        <option value="L">L</option>
+        <option value="mL">mL</option>
       </select>`;
+    const selectUnidade = tdUnidade.querySelector("#unidade");
+    selectUnidade.value = antigaUnidade;
 
-    tdValorTotal.innerHTML = `<input type="number" id="valorTotal" value="${tdValorTotal.textContent}" required/>`;
+    tdValorTotal.innerHTML = `<input type="number" id="valorTotal" value="${tdValorTotal.textContent.replace("R$", "")}" required/>`;
 
-    tdquantidadePorEmbalagem.innerHTML = `<input type="number" id="quantidade" value="${tdquantidadePorEmbalagem.innerHTML}" "required/>`;
+    tdquantidadePorEmbalagem.innerHTML = `<input type="number" id="quantidade" value="${tdquantidadePorEmbalagem.textContent.replace(/\D/g, "")}" "required/>`;
 
     const campos = [
       tdNome.querySelector("input"),
@@ -91,9 +96,9 @@ function adicionarInsumoNaTela(objetoInsumo) {
 
       tdNome.innerHTML = `${campos[0].value}`;
       tdUnidade.innerHTML = `${campos[1].value}`;
-      tdValorTotal.innerHTML = `${campos[2].value}`;
-      tdquantidadePorEmbalagem.innerHTML = `${campos[3].value}`;
-      tdValorFracionado.innerHTML = `R$${Number(campos[2].value) / Number(campos[3].value)}/Kg`;
+      tdValorTotal.innerHTML = `R$${campos[2].value}`;
+      tdquantidadePorEmbalagem.innerHTML = `${campos[3].value}${campos[1].value}`;
+      tdValorFracionado.innerHTML = `R$${Number(campos[2].value) / Number(campos[3].value)}/${campos[1].value}`;
       tr.classList.remove("formularioTr");
       botaoEditar.onclick = editarInsumo;
     }
@@ -241,8 +246,9 @@ function abrirFormulário() {
           ),
         ),
       };
-      await criarProduto(produtoParaCriar);
-      adicionarInsumoNaTela(produtoParaCriar);
+      const produtoCriado = await criarProduto(produtoParaCriar);
+
+      adicionarInsumoNaTela(produtoCriado);
     });
   tbody.appendChild(formularioTr);
   inputNome.focus();
