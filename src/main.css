@@ -170,7 +170,7 @@ dialog .add_receipe_window_conteiner {
 
 .recepies_section_table {
   width: 100%;
-  border-spacing: var(--espaço_entre_receitas) 5px;
+  border-spacing: var(--espaço_entre_receitas);
   margin-left: calc(-1 * var(--espaço_entre_receitas));
   width: calc(100% + 2 * var(--espaço_entre_receitas));
   table-layout: fixed;
@@ -188,7 +188,7 @@ dialog .add_receipe_window_conteiner {
 
 .recepies div h5 {
   margin: 0 0 0px 20px;
-  max-width: 470px;
+  max-width: 22vw;
   white-space: nowrap;
   overflow-x: auto;
 }
@@ -230,11 +230,18 @@ dialog .add_receipe_window_conteiner {
   margin-right: 7px;
 }
 
+.recepie_buttons {
+  margin-left: 40px;
+  margin-right: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 .recepies div button,
 .recepies div button img {
   width: 50px;
   height: 50px;
-  margin-right: 40px;
   transform: translateY(4px);
 }
 .table_container {
