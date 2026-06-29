@@ -231,8 +231,8 @@ dialog .add_receipe_window_conteiner {
 }
 
 .recepie_buttons {
-  margin-left: 40px;
-  margin-right: 30px;
+  margin-left: 50px;
+  margin-right: 25px;
   display: flex;
   flex-direction: row;
   gap: 10px;

@@ -282,6 +282,15 @@ function adicionarElementoReceita(objetoReceita) {
   novoTdReceitas.appendChild(divReceita);
   const tabelaReceita = divReceita.querySelector(".recepie_insume_table");
 
+  const recepieDeleteButton = divReceita.querySelector(
+    ".delete_recepie_button",
+  );
+  recepieDeleteButton.addEventListener("click", () => {
+    let confirmação = confirm("deseja memso excluir essa receita ?"); //depois criar algum tipo de aviso mais elaborado pra garantir que o usuàrio não delete sem querer
+    if (confirmação) {
+    }
+  });
+
   let custoTotalDaReceita = 0;
   objetoReceita.insumos.forEach((insumoDaReceita) => {
     let insumoReal = listaDeInsumos.find(
