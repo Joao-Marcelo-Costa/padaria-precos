@@ -54,3 +54,7 @@ export async function buscarReceitas() {
 export async function editarReceita(id, dados) {
   await updateDoc(doc(db, "receitas", id), dados);
 }
+
+export async function deletarReceita(id) {
+  await deleteDoc(doc(db, "receitas", id));
+}

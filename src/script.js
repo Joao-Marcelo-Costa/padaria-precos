@@ -123,7 +123,7 @@ btAdicionarInsumoNaReceita.addEventListener("click", async () => {
   const insumeDeleteButtonImg = document.createElement("img");
   insumeDeleteButton.appendChild(insumeDeleteButtonImg);
   insumeDeleteButtonImg.src = "../public/delete_icon.png";
-  insumeDeleteButtonImg.alt = "botão de deletar receita";
+  insumeDeleteButtonImg.alt = "botão de deletar insumo";
   insumeDeleteButton.addEventListener("click", () => {
     receitaAtual.insumos.splice(indexInsumoAtual, 1);
     trInsumo.remove();
@@ -265,9 +265,14 @@ function adicionarElementoReceita(objetoReceita) {
   divReceita.innerHTML = `
     <div class="header_recepie_div">
       <h5>${objetoReceita.nome}</h5>
-      <button class="edit_recepie_buttton">
-      <img src="../public/edit_icon.png" alt="imagem botão editar receita">
-      </button>
+      <div class="recepie_buttons">
+        <button class="delete_recepie_button">
+          <img src="../public/delete_icon.png" alt="imagem botão deletar receita">
+        </button>
+        <button class="edit_recepie_buttton">
+          <img src="../public/edit_icon.png" alt="imagem botão editar receita">
+        </button>
+      </div>
     </div>
     <div class="table_container">
       <table class="recepie_insume_table"></table>
@@ -276,6 +281,15 @@ function adicionarElementoReceita(objetoReceita) {
   const novoTdReceitas = document.createElement("td");
   novoTdReceitas.appendChild(divReceita);
   const tabelaReceita = divReceita.querySelector(".recepie_insume_table");
+
+  const recepieDeleteButton = divReceita.querySelector(
+    ".delete_recepie_button",
+  );
+  recepieDeleteButton.addEventListener("click", () => {
+    let confirmação = confirm("deseja memso excluir essa receita ?"); //depois criar algum tipo de aviso mais elaborado pra garantir que o usuàrio não delete sem querer
+    if (confirmação) {
+    }
+  });
 
   let custoTotalDaReceita = 0;
   objetoReceita.insumos.forEach((insumoDaReceita) => {
