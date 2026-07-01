@@ -224,7 +224,7 @@ dialog .add_receipe_window_conteiner {
 
 .recepies div tr td p {
   font-weight: 400;
-  font-size: 25px;
+  font-size: 30px;
   margin-top: 0;
   margin-right: 7px;
 }
@@ -275,7 +275,8 @@ dialog .add_receipe_window_conteiner {
   text-overflow: ellipsis;
 }
 .prices_div {
-  margin-bottom: 20px;
+  margin-bottom: 2px;
+  margin-top: 20px;
 }
 .recepies div p {
   margin-top: 0;
