@@ -6,6 +6,7 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 
 export async function listarProdutos() {
@@ -57,4 +58,19 @@ export async function editarReceita(id, dados) {
 
 export async function deletarReceita(id) {
   await deleteDoc(doc(db, "receitas", id));
+}
+
+export async function buscarReceitaPorId(id) {
+  const receitaRef = doc(db, "receitas", id);
+
+  const snapshot = await getDoc(receitaRef);
+
+  if (!snapshot.exists()) {
+    return null;
+  }
+
+  return {
+    id: snapshot.id,
+    ...snapshot.data(),
+  };
 }

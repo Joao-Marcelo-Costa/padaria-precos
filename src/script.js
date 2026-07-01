@@ -5,6 +5,7 @@ import {
   criarReceita,
   buscarReceitas,
   deletarReceita,
+  buscarReceitaPorId,
 } from "../src/api.js";
 import { doc, query } from "firebase/firestore";
 
@@ -20,6 +21,7 @@ const btCancelar = document.querySelector(".cancel_button");
 const btSalvar = document.querySelector(".save_button");
 const listaDeReceitas = await buscarReceitas();
 const sectionReceitas = document.querySelector(".section_table");
+const tituloDialog = document.querySelector(".dialog_title");
 
 let insumoSelecionadoId = "";
 let receitaAtual = {
@@ -28,13 +30,21 @@ let receitaAtual = {
 };
 
 function resetarJanelaAdicionarReceitas() {
-  tabelaInsumosReceita.innerHTML = "";
   inputNomeDaReceita.value = "";
+  inputUnidadeDaReceita.value = "UN";
+  tabelaInsumosReceita.innerHTML = "";
   receitaAtual = { nome: "", insumos: [] };
 }
 
 async function atualizarSelectInsumos(select) {
   const listaDeInsumosNova = await listarProdutos();
+
+  let selectValorInicial = null;
+  if (select.value) {
+    selectValorInicial = select.value;
+  } else {
+    selectValorInicial = listaDeInsumosNova[0].id;
+  }
 
   select.innerHTML = "";
 
@@ -45,25 +55,11 @@ async function atualizarSelectInsumos(select) {
 
     select.appendChild(optionInsumos);
   });
+
+  select.value = selectValorInicial;
 }
 
-btAdicionarReceita.addEventListener("click", () => {
-  janelaAdicionarReceita.showModal();
-  receitaAtual = {
-    nome: "",
-    insumos: [],
-  };
-  inputNomeDaReceita.focus();
-});
-
-const botaoFechar = document.querySelector(".close_button");
-
-botaoFechar.addEventListener("click", () => {
-  resetarJanelaAdicionarReceitas();
-  janelaAdicionarReceita.close();
-});
-
-btAdicionarInsumoNaReceita.addEventListener("click", async () => {
+async function adcionarInsumoNaReceita(insumoParaAdicionar) {
   const indexInsumoAtual = receitaAtual.insumos.length;
   receitaAtual.insumos.push({});
 
@@ -159,6 +155,32 @@ btAdicionarInsumoNaReceita.addEventListener("click", async () => {
   quantidadeInsumoInput.addEventListener("keydown", (e) =>
     navegarPorEnter(e, quantidadeInsumoInput),
   );
+
+  if (insumoParaAdicionar) {
+    selectNovoInsumo.value = insumoParaAdicionar.id;
+    quantidadeInsumoInput.value = insumoParaAdicionar.quantidade;
+  }
+}
+
+btAdicionarReceita.addEventListener("click", () => {
+  tituloDialog.innerHTML = "Adicionar receita";
+  janelaAdicionarReceita.showModal();
+  receitaAtual = {
+    nome: "",
+    insumos: [],
+  };
+  inputNomeDaReceita.focus();
+});
+
+const botaoFechar = document.querySelector(".close_button");
+
+botaoFechar.addEventListener("click", () => {
+  resetarJanelaAdicionarReceitas();
+  janelaAdicionarReceita.close();
+});
+
+btAdicionarInsumoNaReceita.addEventListener("click", () => {
+  adcionarInsumoNaReceita();
 });
 
 window.addEventListener("focus", async () => {
@@ -244,8 +266,10 @@ btSalvar.addEventListener("click", async () => {
     receitaAtual.nome = inputNomeDaReceita.value.trim();
     receitaAtual.unidade = inputUnidadeDaReceita.value;
     receitaAtual.rendimento = inputRendimentoDaReceita.value.trim();
-    await criarReceita(receitaAtual);
-    adicionarElementoReceita(receitaAtual);
+    const novaReceitaId = await criarReceita(receitaAtual);
+    const novaReceitaObjeto = await buscarReceitaPorId(novaReceitaId);
+    adicionarElementoReceita(novaReceitaObjeto);
+
     resetarJanelaAdicionarReceitas();
     janelaAdicionarReceita.close();
   } catch (error) {
@@ -287,8 +311,25 @@ function adicionarElementoReceita(objetoReceita) {
     }
   });
 
+  const recepieEditButtton = divReceita.querySelector(".edit_recepie_buttton");
+  recepieEditButtton.addEventListener("click", async () => {
+    janelaAdicionarReceita.showModal();
+    const receitaBuscadaPorId = await buscarReceitaPorId(
+      divReceita.dataset.receitaId,
+    );
+    tituloDialog.innerHTML = "Editar receita";
+    inputNomeDaReceita.value = receitaBuscadaPorId.nome;
+    inputUnidadeDaReceita.value = receitaBuscadaPorId.unidade;
+    inputRendimentoDaReceita.value = receitaBuscadaPorId.rendimento;
+    tabelaInsumosReceita.innerHTML = "";
+    receitaBuscadaPorId.insumos.forEach((e) => {
+      adcionarInsumoNaReceita(e);
+    });
+  });
+
   let custoTotalDaReceita = 0;
   objetoReceita.insumos.forEach((insumoDaReceita) => {
+    //cria a tabela de insumos dentro das receitas
     let insumoReal = listaDeInsumos.find(
       (insumo) => insumo.id === insumoDaReceita.id,
     );
