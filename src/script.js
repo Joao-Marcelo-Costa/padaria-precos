@@ -1,6 +1,11 @@
 import "./main.css";
 import "./style.css";
-import { listarProdutos, criarReceita, buscarReceitas } from "../src/api.js";
+import {
+  listarProdutos,
+  criarReceita,
+  buscarReceitas,
+  deletarReceita,
+} from "../src/api.js";
 import { doc, query } from "firebase/firestore";
 
 const inputNomeDaReceita = document.querySelector(".add_recepie_name");
@@ -14,8 +19,7 @@ let listaDeInsumos = await listarProdutos();
 const btCancelar = document.querySelector(".cancel_button");
 const btSalvar = document.querySelector(".save_button");
 const listaDeReceitas = await buscarReceitas();
-const sectionReceitas = document.querySelector(".recepies_section");
-const tabelaSectionReceitas = document.querySelector(".recepies_section_table");
+const sectionReceitas = document.querySelector(".section_table");
 
 let insumoSelecionadoId = "";
 let receitaAtual = {
@@ -250,15 +254,7 @@ btSalvar.addEventListener("click", async () => {
   }
 });
 
-let qunaitidadeLinha = 0;
 function adicionarElementoReceita(objetoReceita) {
-  if (qunaitidadeLinha % 3 === 0) {
-    const novoTrReceitas = document.createElement("tr");
-    novoTrReceitas.classList.add("holding_recepies_tr");
-    tabelaSectionReceitas.appendChild(novoTrReceitas);
-  }
-  qunaitidadeLinha += 1;
-
   const divReceita = document.createElement("div");
   divReceita.dataset.receitaId = objetoReceita.id;
   divReceita.classList.add("main_recepie_div");
@@ -278,8 +274,6 @@ function adicionarElementoReceita(objetoReceita) {
       <table class="recepie_insume_table"></table>
     </div>
   `;
-  const novoTdReceitas = document.createElement("td");
-  novoTdReceitas.appendChild(divReceita);
   const tabelaReceita = divReceita.querySelector(".recepie_insume_table");
 
   const recepieDeleteButton = divReceita.querySelector(
@@ -288,6 +282,8 @@ function adicionarElementoReceita(objetoReceita) {
   recepieDeleteButton.addEventListener("click", () => {
     let confirmação = confirm("deseja memso excluir essa receita ?"); //depois criar algum tipo de aviso mais elaborado pra garantir que o usuàrio não delete sem querer
     if (confirmação) {
+      deletarReceita(divReceita.dataset.receitaId);
+      divReceita.remove();
     }
   });
 
@@ -324,11 +320,7 @@ function adicionarElementoReceita(objetoReceita) {
   <p>R$${(custoTotalDaReceita / objetoReceita.rendimento).toFixed(2)}/${objetoReceita.unidade}</p>
   `;
   divReceita.appendChild(pricesDiv);
-  const todosTrs = tabelaSectionReceitas.querySelectorAll(
-    ".holding_recepies_tr",
-  );
-  const ultimoTr = todosTrs[todosTrs.length - 1];
-  ultimoTr.appendChild(novoTdReceitas);
+  sectionReceitas.appendChild(divReceita);
 }
 
 listaDeReceitas.forEach((receita) => {

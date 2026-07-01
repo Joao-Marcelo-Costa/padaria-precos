@@ -165,18 +165,17 @@ dialog .add_receipe_window_conteiner {
   margin-top: auto;
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
 }
 
-.recepies_section_table {
-  width: 100%;
-  border-spacing: var(--espaço_entre_receitas);
-  margin-left: calc(-1 * var(--espaço_entre_receitas));
-  width: calc(100% + 2 * var(--espaço_entre_receitas));
-  table-layout: fixed;
+.section_table {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
 }
-.recepies_section_table tr td {
-  width: 33%;
+.section_table .main_recepie_div {
+  width: 32.8%;
 }
 
 .header_recepie_div {
@@ -225,7 +224,7 @@ dialog .add_receipe_window_conteiner {
 
 .recepies div tr td p {
   font-weight: 400;
-  font-size: 25px;
+  font-size: 30px;
   margin-top: 0;
   margin-right: 7px;
 }
@@ -276,7 +275,8 @@ dialog .add_receipe_window_conteiner {
   text-overflow: ellipsis;
 }
 .prices_div {
-  margin-bottom: 20px;
+  margin-bottom: 2px;
+  margin-top: 20px;
 }
 .recepies div p {
   margin-top: 0;
